@@ -1,0 +1,17 @@
+{
+  "name": "php_oe31_library",
+  "description": "",
+  "main": "",
+  "authors": [
+    "Chanh_Ubuntu2020 <quangsoi99@gmail.com>"
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/Cho99/php_oe31_library",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
