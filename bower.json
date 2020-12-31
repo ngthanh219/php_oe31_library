@@ -13,5 +13,9 @@
     "bower_components",
     "test",
     "tests"
-  ]
+  ],
+  "dependencies": {
+    "admin-lte": "https://github.com/ngthanh219/admin-lte.git",
+    "book-client-lte": "https://github.com/ngthanh219/book-client-lte.git"
+  }
 }
