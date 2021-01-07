@@ -39,9 +39,9 @@
         <header class="main-header">
             <a href="" class="logo">
                 <span class="logo-mini"><img src="{{ asset('bower_components/admin-lte/dist/img/logo1.png') }}"
-                        alt=""></span>
+                    alt=""></span>
                 <span class="logo-lg"><img src="{{ asset('bower_components/admin-lte/dist/img/logo.png') }}"
-                        alt=""></span>
+                    alt=""></span>
             </a>
             <nav class="navbar navbar-static-top">
                 <a href="#" class="sidebar-toggle" data-toggle="push-menu" role="button">
@@ -105,9 +105,9 @@
                 </div>
                 <ul class="sidebar-menu" data-widget="tree">
                     <li>
-                        <a href="#">
-                            <i class="fa fa-graduation-cap" aria-hidden="true"></i>
-                            <span>{{ trans('admin.role') }}</span>
+                        <a href="{{ route('admin.publishers.index') }}">
+                            <i class="fa fa-building"></i>
+                            <span>{{ trans('publisher.publisher') }}</span>
                         </a>
                     </li>
                 </ul>
