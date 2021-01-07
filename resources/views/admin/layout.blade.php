@@ -39,9 +39,9 @@
         <header class="main-header">
             <a href="" class="logo">
                 <span class="logo-mini"><img src="{{ asset('bower_components/admin-lte/dist/img/logo1.png') }}"
-                    alt=""></span>
+                        alt=""></span>
                 <span class="logo-lg"><img src="{{ asset('bower_components/admin-lte/dist/img/logo.png') }}"
-                    alt=""></span>
+                        alt=""></span>
             </a>
             <nav class="navbar navbar-static-top">
                 <a href="#" class="sidebar-toggle" data-toggle="push-menu" role="button">
@@ -105,6 +105,12 @@
                 </div>
                 <ul class="sidebar-menu" data-widget="tree">
                     <li>
+                        <a href="{{ route('admin.users.index') }}">
+                            <i class="fa fa-users"></i>
+                            <span>{{ trans('user.users_manager') }}</span>
+                        </a>
+                    </li>
+                    <li>
                         <a href="{{ route('admin.publishers.index') }}">
                             <i class="fa fa-building"></i>
                             <span>{{ trans('publisher.publisher') }}</span>
@@ -115,7 +121,6 @@
         </aside>
 
         @yield('index')
-
         <footer class="main-footer">
             <div class="pull-right hidden-xs">
                 <b>
@@ -126,6 +131,7 @@
         </footer>
         <div class="control-sidebar-bg"></div>
     </div>
+    @yield('script')
     <script type="text/javascript" src="{{ asset('/js/user_menu.js') }}"></script>
     <script type="text/javascript" src="{{ asset('/js/sweet-alert.js') }}"></script>
     <script src="{{ asset('bower_components/admin-lte/dist/js/component/general.js') }}">
