@@ -1,0 +1,35 @@
+.span9.first.wapper {
+    position: relative;
+}
+
+.span4.slide.wapper {
+    margin-left: 0 !important;
+    margin-right: 10px;
+}
+
+.title.wapper {
+    text-align: center;
+}
+
+.box-wapper {
+    display: none;
+    line-height: 30px;
+    background: #f3ecec;
+    border-radius: 5px;
+}
+
+.hover-wapper:hover .box-wapper {
+    display: flex;
+    flex-direction: column;
+    z-index: 99999;
+}
+
+.box-wapper .item-wapper .child {
+    margin-left: 10px;
+    display: block;
+}
+
+.blog-footer.wapper {
+    position: absolute;
+    bottom: -35px;
+}

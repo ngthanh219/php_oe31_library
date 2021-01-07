@@ -1,0 +1,63 @@
+.cus {
+    cursor: pointer;
+}
+
+.td.general {
+    align-items: center;
+}
+
+i.fa.fa-eye {
+    padding: 0 10px;
+}
+
+.col-9-form.general {
+    padding-right: 50px;
+}
+
+.col-9-form.general .label-general {
+    margin-right: 10px;
+}
+
+.form-control.select2 {
+    width: 100%;
+}
+
+.form-control.select2.general {
+    width: 300px;
+}
+
+.content-wrapper {
+    position: relative;
+}
+
+.cafe-f {
+    margin: 0 auto;
+    background: hsla(0,0%,8%,.85);
+    flex-grow: 1;
+    position: absolute;
+    top: 0px;
+    right: 0;
+    height: calc(100%);
+    width: calc(100% - 0px);
+    transform: translateX(100%);
+    transition: transform ease 300ms;
+}
+
+.show {
+    transform: translateX(0%);
+}
+
+.overlay {
+    width: 100%;
+    position: absolute;
+    height: 30%;
+    background: white;
+    top: 0px;
+    transition: opacity ease 200ms;
+}
+
+.tab-content.general {
+    padding: 50px;
+    width: 1000px;
+    margin: 0 auto;
+}
