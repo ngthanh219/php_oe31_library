@@ -116,6 +116,12 @@
                             <span>{{ trans('publisher.publisher') }}</span>
                         </a>
                     </li>
+                    <li>
+                        <a href="{{ route('admin.authors.index') }}">
+                            <i class="fa fa-address-book"></i>
+                            <span>{{ trans('author.author') }}</span>
+                        </a>
+                    </li>
                 </ul>
             </section>
         </aside>
