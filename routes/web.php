@@ -26,8 +26,10 @@ Route::group(['middleware' => 'admin'], function () {
                 'publishers' => 'PublisherController',
                 'users' => 'UserController',
                 'authors' => 'AuthorController',
+                'categories' => 'CategoryController',
             ]);
             Route::get('search-user', 'UserController@search')->name('search-user');
+            Route::post('api-store-category', 'CategoryController@apiStore')->name('api-store-category');
         });
     });
 });
