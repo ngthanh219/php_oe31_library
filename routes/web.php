@@ -24,7 +24,8 @@ Route::group(['middleware' => 'admin'], function () {
             Route::get('publishers/export', 'PublisherController@export')->name('publishers.export');
             Route::resources([
                 'publishers' => 'PublisherController',
-                'users' => 'UserController'
+                'users' => 'UserController',
+                'authors' => 'AuthorController',
             ]);
             Route::get('search-user', 'UserController@search')->name('search-user');
         });
