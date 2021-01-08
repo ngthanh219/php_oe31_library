@@ -16,6 +16,7 @@
   ],
   "dependencies": {
     "admin-lte": "https://github.com/ngthanh219/admin-lte.git",
-    "book-client-lte": "https://github.com/ngthanh219/book-client-lte.git"
+    "book-client-lte": "https://github.com/ngthanh219/book-client-lte.git",
+    "bootstrap-sweetalert": "^1.0.1"
   }
 }
