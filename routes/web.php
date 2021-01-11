@@ -27,9 +27,12 @@ Route::group(['middleware' => 'admin'], function () {
                 'users' => 'UserController',
                 'authors' => 'AuthorController',
                 'categories' => 'CategoryController',
+                'books' => 'BookController',
             ]);
             Route::get('search-user', 'UserController@search')->name('search-user');
             Route::post('api-store-category', 'CategoryController@apiStore')->name('api-store-category');
+            Route::get('search-book', 'BookController@search')->name('search-book');
+            Route::get('category-popup', 'BookController@catePopup')->name('category-popup');
         });
     });
 });

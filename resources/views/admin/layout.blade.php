@@ -128,6 +128,12 @@
                             <span>{{ trans('author.author') }}</span>
                         </a>
                     </li>
+                    <li>
+                        <a href="{{ route('admin.books.index') }}">
+                            <i class="fa fa-book"></i>
+                            <span>{{ trans('book.book') }}</span>
+                        </a>
+                    </li>
                 </ul>
             </section>
         </aside>
