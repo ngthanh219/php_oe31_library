@@ -36,3 +36,7 @@ Route::group(['middleware' => 'admin'], function () {
         });
     });
 });
+
+Route::get('/', 'BookController@index')->name('home');
+Route::get('category-book/{categoryId}', 'BookController@getCategory')->name('category-book');
+Route::get('detail/{book}', 'BookController@getDetailBook')->name('detail');
