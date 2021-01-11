@@ -65,5 +65,6 @@ class Kernel extends HttpKernel
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
         'language'=> \App\Http\Middleware\Localization::class,
         'admin' => \App\Http\Middleware\Admin::class,
+        'superAdmin' => \App\Http\Middleware\SuperAdmin::class,
     ];
 }

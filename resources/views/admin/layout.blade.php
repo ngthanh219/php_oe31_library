@@ -104,6 +104,14 @@
                     </div>
                 </div>
                 <ul class="sidebar-menu" data-widget="tree">
+                    @can('admin-role')
+                        <li>
+                            <a href="{{ route('admin.roles.index') }}">
+                                <i class="fa fa-graduation-cap" aria-hidden="true"></i>
+                                <span>{{ trans('role.role') }}</span>
+                            </a>
+                        </li>
+                    @endcan
                     <li>
                         <a href="{{ route('admin.users.index') }}">
                             <i class="fa fa-users"></i>

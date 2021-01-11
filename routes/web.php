@@ -23,6 +23,7 @@ Route::group(['middleware' => 'admin'], function () {
             Route::get('dashboard', 'HomeController@index')->name('dashboard');
             Route::get('publishers/export', 'PublisherController@export')->name('publishers.export');
             Route::resources([
+                'roles' => 'RoleController',
                 'publishers' => 'PublisherController',
                 'users' => 'UserController',
                 'authors' => 'AuthorController',
