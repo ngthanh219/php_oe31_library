@@ -117,6 +117,12 @@
                         </a>
                     </li>
                     <li>
+                        <a href="{{ route('admin.categories.index') }}">
+                            <i class="fa fa-tags"></i>
+                            <span>{{ trans('category.category') }}</span>
+                        </a>
+                    </li>
+                    <li>
                         <a href="{{ route('admin.authors.index') }}">
                             <i class="fa fa-address-book"></i>
                             <span>{{ trans('author.author') }}</span>
