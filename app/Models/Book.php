@@ -16,10 +16,12 @@ class Book extends Model
     protected $fillable = [
         'image',
         'name',
-        'description',
-        'category_id',
-        'publisher_id',
         'author_id',
+        'publisher_id',
+        'in_stock',
+        'total',
+        'status',
+        'description',
     ];
 
     public function requests()
