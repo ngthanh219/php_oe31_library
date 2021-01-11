@@ -111,6 +111,12 @@
                         </a>
                     </li>
                     <li>
+                        <a href="{{ route('admin.request') }}">
+                            <i class="fa fa-shopping-cart" aria-hidden="true"></i>
+                            <span>{{ trans('request.request') }}</span>
+                        </a>
+                    </li>
+                    <li>
                         <a href="{{ route('admin.publishers.index') }}">
                             <i class="fa fa-building"></i>
                             <span>{{ trans('publisher.publisher') }}</span>

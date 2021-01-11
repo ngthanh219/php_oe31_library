@@ -13,6 +13,7 @@ class Request extends Model
         'borrowed_date',
         'return_date',
         'user_id',
+        'status',
     ];
 
     public function user()

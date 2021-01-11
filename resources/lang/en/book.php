@@ -15,6 +15,8 @@ return [
     'unknow' => 'Unknow',
     'visible' => 'Visible',
     'hidden' => 'Hidden',
+    'author' => 'Author',
+    'categories' => 'Categories',
     'status' => 'Status',
     'filter' => 'Enter name of book',
     'actions' => 'Actions',
