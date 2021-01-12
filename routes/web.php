@@ -17,8 +17,9 @@ Route::get('/', 'Auth\LoginController@showLoginForm')->name('login');
 
 Auth::routes();
 
-Route::group(['middleware' => 'admin'], function () {
-    Route::group(['middleware' => 'auth'], function () {
+Route::group(['middleware' => 'auth'], function () {
+    Route::group(['middleware' => 'admin'], function () {
+
         Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'as' => 'admin.'], function () {
             Route::get('dashboard', 'HomeController@index')->name('dashboard');
             Route::get('publishers/export', 'PublisherController@export')->name('publishers.export');
@@ -33,6 +34,13 @@ Route::group(['middleware' => 'admin'], function () {
             Route::post('api-store-category', 'CategoryController@apiStore')->name('api-store-category');
             Route::get('search-book', 'BookController@search')->name('search-book');
             Route::get('category-popup', 'BookController@catePopup')->name('category-popup');
+            Route::get('request', 'RequestController@index')->name('request');
+            Route::get('request-detail/{request}', 'RequestController@show')->name('request-detail');
+            Route::get('accept/{request}', 'RequestController@accept')->name('accept');
+        Route::get('reject/{request}', 'RequestController@reject')->name('reject');
+        Route::get('undo/{request}', 'RequestController@undo')->name('undo');
+        Route::get('borrowed-book/{request}', 'RequestController@borrowedBook')->name('borrowed-book');
+        Route::get('return-book/{request}', 'RequestController@returnBook')->name('return-book');
         });
     });
 });

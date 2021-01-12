@@ -32,5 +32,5 @@ return [
     'create_user_success' => 'Create new user successfully',
     'update_user_success' => 'Update user successfully',
     'delete_user_success' => 'Delete user successfully',
-    'no_role' => 'No role'
+    'no_role' => 'No role',
 ];
