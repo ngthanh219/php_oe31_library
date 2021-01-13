@@ -27,20 +27,28 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        $votes = [
+            config('rate.five'),
+            config('rate.four'),
+            config('rate.three'),
+            config('rate.two'),
+            config('rate.one'),
+        ];
         view()->composer([
             'client.detail_book',
             'client.category',
             'client.category_book',
             'client.home',
             'client.modules.trending',
-        ], function ($view) {
+        ], function ($view) use ($votes) {
             $view->with([
                 'categories' => Category::with('children')->where('parent_id', config('category.parent_id'))->get(),
-                'authors' => Author::take(config('pagination.limit_author'))->get(),
-                'newBooks' => Book::with('author')->orderBy('id', 'DESC')->take(config('pagination.limit'))->get(),
+                'authors' => Author::take(config('author.take'))->get(),
+                'newBooks' => Book::with('author')->orderBy('id', 'DESC')->take(config('book.take'))->get(),
                 'likeBooks' => Book::withCount(['likes' => function (Builder $query) {
                     $query->where('status', config('like.liked'));
-                }])->having('likes_count', '<>', config('like.liked'))->orderBy('likes_count', 'desc')->take(config('pagination.limit'))->get(),
+                }])->having('likes_count', '<>', config('like.count'))->orderBy('likes_count', 'desc')->take(config('like.take'))->get(),
+                'votes' => $votes,
             ]);
         });
     }

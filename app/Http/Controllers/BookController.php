@@ -4,9 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Book;
 use App\Models\Category;
+use Auth;
 use Illuminate\Http\Request;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Support\ServiceProvider;
 
 class BookController extends Controller
 {
@@ -27,9 +26,16 @@ class BookController extends Controller
 
     public function getDetailBook($id)
     {
-        $book = Book::findOrFail($id)->load(['publisher', 'likes.user' , 'categories.books' => function ($query) {
-            $query->inRandomOrder()->get()->take(config('pagination.limit'));
-        }]);
+        $book = Book::findOrFail($id)->load([
+            'publisher',
+            'likes.user',
+            'categories.books' => function ($query) {
+                $query->inRandomOrder()->get()->take(config('pagination.limit'));
+            },
+            'rates' => function ($query) {
+                $query->where('user_id', Auth::id());
+            },
+        ]);
 
         return view('client.detail_book', compact('book'));
     }

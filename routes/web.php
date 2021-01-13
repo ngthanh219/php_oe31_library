@@ -38,12 +38,15 @@ Route::group(['middleware' => 'auth'], function () {
             Route::get('request', 'RequestController@index')->name('request');
             Route::get('request-detail/{request}', 'RequestController@show')->name('request-detail');
             Route::get('accept/{request}', 'RequestController@accept')->name('accept');
-        Route::get('reject/{request}', 'RequestController@reject')->name('reject');
-        Route::get('undo/{request}', 'RequestController@undo')->name('undo');
-        Route::get('borrowed-book/{request}', 'RequestController@borrowedBook')->name('borrowed-book');
-        Route::get('return-book/{request}', 'RequestController@returnBook')->name('return-book');
+            Route::get('reject/{request}', 'RequestController@reject')->name('reject');
+            Route::get('undo/{request}', 'RequestController@undo')->name('undo');
+            Route::get('borrowed-book/{request}', 'RequestController@borrowedBook')->name('borrowed-book');
+            Route::get('return-book/{request}', 'RequestController@returnBook')->name('return-book');
         });
     });
+    Route::resource('comments', 'CommentController');
+    Route::get('react/{book}', 'ReactionController@react')->name('react');
+    Route::get('vote', 'ReactionController@vote')->name('vote');
 });
 
 Route::get('/', 'BookController@index')->name('home');
