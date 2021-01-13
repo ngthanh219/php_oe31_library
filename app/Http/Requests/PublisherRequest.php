@@ -5,7 +5,7 @@ namespace App\Http\Requests;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
-class PublisherController extends FormRequest
+class PublisherRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -33,7 +33,7 @@ class PublisherController extends FormRequest
             ],
             'image' => 'mimes:jpeg,jpg,png,gif|max:10000',
             'email' => 'email|nullable',
-            'phone' => 'regex:/(0)[0-9]{9}/|max:11',
+            'phone' => 'regex:/(0)[0-9]{9}/|max:11|nullable',
             'address' => 'nullable|max:10000',
         ];
     }

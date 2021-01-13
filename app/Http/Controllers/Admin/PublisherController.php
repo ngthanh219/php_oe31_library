@@ -6,6 +6,7 @@ use App\Exports\PublishersExport;
 use App\Http\Controllers\Controller;
 use App\Models\Publisher;
 use Illuminate\Http\Request;
+use App\Http\Requests\PublisherRequest;
 use Maatwebsite\Excel\Facades\Excel;
 
 class PublisherController extends Controller
@@ -38,7 +39,7 @@ class PublisherController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(PublisherRequest $request)
     {
         $publisher = new Publisher;
         $image = '';
@@ -84,7 +85,7 @@ class PublisherController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(PublisherRequest $request, $id)
     {
         $publisher = Publisher::findOrFail($id);
         $image = $publisher->image;
@@ -136,7 +137,7 @@ class PublisherController extends Controller
     public function export()
     {
         $item = new PublishersExport;
-        if ($item->collection()) {
+        if ($item->view()) {
             return Excel::download(new PublishersExport, 'publishers.xlsx');
         }
 

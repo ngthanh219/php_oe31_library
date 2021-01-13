@@ -3,6 +3,7 @@
 return [
     'publisher' => 'Nhà xuất bản',
     'phone' => 'Số điện thoại',
+    'name' => 'Tên nhà xuất bản',
     'email' => 'Email',
     'address' => 'Địa chỉ',
     'publisher_list' => 'Danh sách nhà xuất bản',
@@ -17,6 +18,7 @@ return [
     'publisher_form' => 'Nhà xuất bản',
     'actions' => 'Hành động',
     'export_submit_button' => 'Export',
+    'image' => 'Logo',
     'unknow' => 'Không có dữ liệu',
     'notifi' => 'Thông báo',
 ];
