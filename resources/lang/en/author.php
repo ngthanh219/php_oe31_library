@@ -10,6 +10,7 @@ return [
     'description' => 'Description',
     'date_of_born' => 'Date of born',
     'date_of_death' => 'Date of death',
+    'author_filter' => 'Enter author name',
     'add_submit_button' => 'Add New',
     'edit_submit_button' => 'Edit',
     'return' => 'Return',

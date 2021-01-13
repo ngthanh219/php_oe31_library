@@ -3,20 +3,21 @@
 namespace App\Exports;
 
 use App\Models\Publisher;
-use Maatwebsite\Excel\Concerns\FromCollection;
+use Illuminate\Contracts\View\View;
+use Maatwebsite\Excel\Concerns\FromView;
 
-class PublishersExport implements FromCollection
+class PublishersExport implements FromView
 {
-    /**
-     * @return \Illuminate\Support\Collection
-     */
-    public function collection()
+    public function view(): View
     {
         $publishers = Publisher::all(['name', 'email', 'phone', 'address', 'description']);
         if ($publishers->isEmpty()) {
             return false;
         }
 
-        return $publishers;
+        return view('admin.export.publishers', [
+            'publishers' => $publishers,
+        ]);
     }
+
 }

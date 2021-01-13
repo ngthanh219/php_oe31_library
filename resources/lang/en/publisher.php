@@ -17,6 +17,7 @@ return [
     'publisher_create' => 'Publisher Create',
     'publisher_form' => 'Publisher From',
     'actions' => 'Actions',
+    'image' => 'Logo',
     'export_submit_button' => 'Export',
     'unknow' => 'Unknow',
     'notifi' => 'Notification',
