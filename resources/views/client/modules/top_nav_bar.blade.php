@@ -23,8 +23,8 @@
                         </li>
                     @endif
                     <li class="p-category">
-                        <a href="#">{{ trans('client.en') }}</a>
-                        <a href="#">{{ trans('client.vi') }}</a>
+                        <a href="{{ route('change-language', ['language' => 'en']) }}">{{ trans('client.en') }}</a>
+                        <a href="{{ route('change-language', ['language' => 'vi']) }}">{{ trans('client.vi') }}</a>
                     </li>
                 </ul>
                 <div class="c-btn"> <a href="#" class="cart-btn">{{ trans('client.cart') }}</a>

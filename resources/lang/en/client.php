@@ -10,4 +10,6 @@ return [
     'btn_comment' => 'Comment',
     'book_store' => 'Book Library',
     'shop_by' => 'Shop By',
+    'en' => 'English',
+    'vi' => 'Vietnamese',
 ];

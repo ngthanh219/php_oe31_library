@@ -6,6 +6,7 @@ use App\Models\Like;
 use App\Models\Rate;
 use Auth;
 use Illuminate\Http\Request;
+use Session;
 
 class ReactionController extends Controller
 {
@@ -70,5 +71,16 @@ class ReactionController extends Controller
                 'message' => trans('rate.voted_success'),
             ]);
         }
+    }
+
+    public function changeLanguage(Request $request)
+    {
+        $lang = $request->language;
+        if ($lang != 'en' && $lang != 'vi') {
+            $lang = config('app.locale');
+        }
+        Session::put('language', $lang);
+
+        return redirect()->back();
     }
 }
