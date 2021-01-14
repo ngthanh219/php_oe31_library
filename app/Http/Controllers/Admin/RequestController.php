@@ -10,7 +10,7 @@ class RequestController extends Controller
 {
     public function index()
     {
-        $requests = Request::with('user')->orderBy('id', 'DESC')->get();
+        $requests = Request::with('user')->orderBy('id', 'DESC')->paginate(config('pagination.list_request'));
 
         return view('admin.request.index', compact('requests'));
     }

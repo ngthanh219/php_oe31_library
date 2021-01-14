@@ -6,5 +6,8 @@ return [
     'reject' => 2,
     'borrow' => 3,
     'return' => 4,
+    'late' => 5,
+    'forget' => 6,
     'book' => 1,
+    'total' => 0,
 ];

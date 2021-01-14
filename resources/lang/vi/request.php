@@ -33,4 +33,9 @@ return [
     'add_cart' => 'Thêm vào yêu cầu',
     'add_only_book' => 'Bạn chỉ được mượn một quyển sách trong tất cả các yêu cầu',
     'remove_from_cart' => 'Bỏ sách ra khỏi yêu cầu',
+    'last_day' => 'Ngày cuối',
+    'late' => 'Quá hạn',
+    'in_day' => 'Mượn trong ngày',
+    'too_late' => 'Trả muộn',
+    'take_book_late' => 'Quá hạn nhưng chưa lấy sách',
 ];
