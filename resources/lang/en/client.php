@@ -1,8 +1,25 @@
 <?php
 
 return [
+    'home' => 'Home',
+    'welcome' => 'Welcome',
+    'filter_input' => 'Enter name of book',
+    'search' => 'Search',
     'in_stock' => 'In Stock',
     'add_cart' => '+ Add to cart',
+    'cart' => 'cart',
+    'name_cart' => 'Order in cart',
+    'image_book' => 'Image',
+    'name_book' => 'Book name',
+    'delete_item_in_cart' => 'Delete',
+    'item_cart' => 'books',
+    'borrow_data' => 'Borrow Date',
+    'return_data' => 'Return Date',
+    'request_cart' => 'Request order',
+    'rule1' => 'Borrow up to 5 books in 1 month',
+    'rule2' => 'Each book can only be borrowed once',
+    'rule3' => 'Do not borrow books that are overdue 2 times',
+    'log_out' => 'Log out',
     'rate_question' => 'How do you rate this book?',
     'related_book' => 'Related Book',
     'comment_review' => 'Comment and Reviews',
@@ -12,4 +29,11 @@ return [
     'shop_by' => 'Shop By',
     'en' => 'English',
     'vi' => 'Vietnamese',
+    'new_books' => 'New books',
+    'top_like_book' => 'Top like of book',
+    'top_rate_book' => 'Top rate of book',
+    'about_us' => 'About us',
+    'resources' => 'Resources',
+    'design_by' => 'Design by: ',
+    'name_websites' => 'NguyenTienThanh - BuiQuangAnh'
 ];

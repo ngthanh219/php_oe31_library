@@ -1,4 +1,4 @@
-<strong class="title">Category</strong>
+<strong class="title">{{ trans('category.category') }}</strong>
 <ul class="side-list">
     @foreach ($categories as $category)
         <li class="hover-wapper" id="hover-wapper" data-key="{{ $category->id }}">

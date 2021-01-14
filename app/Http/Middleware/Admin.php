@@ -61,7 +61,7 @@ class Admin
             }
         }
         if (Auth::user()->role_id == config('role.client')) {
-            return redirect()->route('login');
+            return redirect()->route('home');
         }
 
         return $next($request);
