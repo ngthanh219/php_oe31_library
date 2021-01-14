@@ -10,4 +10,6 @@ return [
     'btn_comment' => 'Bình luận',
     'book_store' => 'Thư viện sách',
     'shop_by' => 'Tìm theo',
+    'en' => 'Tiếng Anh',
+    'vi' => 'Tiếng Việt',
 ];
