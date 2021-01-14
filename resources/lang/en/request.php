@@ -38,5 +38,10 @@ return [
     'add_only_book' => 'You can only add one book',
     'remove_from_cart' => 'You removed book',
     'user_active' => 'Active',
-    'user_block' => 'Blocked'
+    'user_block' => 'Blocked',
+    'last_day' => 'Last day',
+    'late' => 'Late',
+    'in_day' => 'In day',
+    'too_late' => 'Too late',
+    'take_book_late' => 'Haven`t taken the book yet',
 ];

@@ -16,7 +16,7 @@
                             </h3>
                             <div class="box-tools pull-right">
                                 <button type="button" class="btn btn-box-tool" data-widget="collapse"><i
-                                        class="fa fa-minus"></i>
+                                    class="fa fa-minus"></i>
                                 </button>
                             </div>
                         </div>
@@ -64,26 +64,43 @@
                                                 <b>{{ $request->user->name }}</b>
                                             </td>
                                             <td>
-                                                <b>{{ $request->borrowed_date }}</b>
+                                                <b>{{ date('d-m-Y', strtotime($request->borrowed_date)) }}</b>
                                             </td>
                                             <td>
-                                                <b>{{ $request->return_date }}</b>
+                                                <b>{{ date('d-m-Y', strtotime($request->return_date)) }}</b>
                                             </td>
                                             <td>
-                                                <b>{{ $totalDate }} {{ trans('request.days') }}</b>
-                                            </td>
-                                            <td>
-                                                @if ($request->status === config('request.pending'))
-                                                    <span class="label label-warning">{{ trans('request.pending') }}</span>
-                                                @elseif ($request->status === config('request.accept'))
-                                                    <span class="label label-primary">{{ trans('request.accept') }}</span>
-                                                @elseif ($request->status === config('request.reject'))
-                                                    <span class="label label-danger">{{ trans('request.reject') }}</span>
-                                                @elseif ($request->status === config('request.borrow'))
-                                                    <span class="label label-info">{{ trans('request.borrowing') }}</span>
-                                                @elseif ($request->status === config('request.return'))
-                                                    <span class="label label-success">{{ trans('request.return') }}</span>
+                                                @if ($totalDate === config('request.total'))
+                                                    <b>{{ trans('request.in_day') }}</b>
+                                                @else 
+                                                    <b>{{ $totalDate }} {{ trans('request.days') }}</b>
                                                 @endif
+                                            </td>
+                                            <td>
+                                                @switch ($request->status)
+                                                    @case (config('request.pending'))
+                                                        <span class="label label-warning">{{ trans('request.pending') }}</span>
+                                                    @break
+                                                    @case (config('request.accept'))
+                                                        <span class="label label-primary">{{ trans('request.accept') }}</span>
+                                                    @break
+                                                    @case (config('request.reject'))
+                                                        <span class="label label-danger">{{ trans('request.reject') }}</span>
+                                                    @break
+                                                    @case (config('request.borrow'))
+                                                        <span class="label label-info">{{ trans('request.borrowing') }}</span>
+                                                    @break
+                                                    @case (config('request.return'))
+                                                        <span class="label label-success">{{ trans('request.return') }}</span>
+                                                    @break
+                                                    @case (config('request.late'))
+                                                        <span class="label label-danger">{{ trans('request.too_late') }}</span>
+                                                    @break
+                                                    @case (config('request.forget'))
+                                                        <span class="label label-danger">{{ trans('request.take_book_late') }}</span>
+                                                    @break
+                                                    @default
+                                                @endswitch
                                             </td>
                                             <td class="td general">
                                                 <a href="{{ route('admin.request-detail', $request->id) }}"
@@ -102,6 +119,7 @@
                     </div>
                 </div>
             </div>
+            {{ $requests->links() }}
         </section>
     </div>
 @section('script')

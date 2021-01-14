@@ -19,7 +19,7 @@
                                 </li>
                                 <li class="list-group-item">
                                     <b>{{ trans('user.phone') }}</b> <a
-                                        class="pull-right">{{ $request->user->phone ? $request->user->phone : 'Unknow' }}</a>
+                                        class="pull-right">{{ $request->user->phone ? $request->user->phone : trans('author.unknow') }}</a>
                                 </li>
                                 <li class="list-group-item">
                                     <b>{{ trans('user.address') }}</b> <a
@@ -27,36 +27,43 @@
                                 </li>
                                 <li class="list-group-item">
                                     <b>{{ trans('user.status') }}</b>
-                                    @if ($request->user->status === config('user.activate'))
+                                    @if ($request->user->status <= config('user.block'))
                                         <a class="pull-right">{{ trans('request.user_active') }}</a>
-                                    @elseif ($request->user->status === config('user.block'))
+                                    @elseif ($request->user->status >= config('user.block'))
                                         <a class="pull-right">{{ trans('request.user_block') }}</a>
                                     @endif
                                 </li>
                             </ul>
                             <div class="form-group text-center">
-                                @if ($request->status === config('request.pending'))
-                                    <a href="{{ route('admin.accept', $request->id) }}"
-                                        class="btn btn-success"><b>{{ trans('request.accept') }}</b></a>
-                                    <a href="{{ route('admin.reject', $request->id) }}"
-                                        class="btn btn-danger"><b>{{ trans('request.reject') }}</b></a>
-                                @elseif($request->status === config('request.reject'))
-                                    <a href="{{ route('admin.undo', $request->id) }}"
-                                        class="btn btn-info"><b>{{ trans('request.undo') }}</b></a>
-                                @elseif($request->status === config('request.accept'))
-                                    <a href="{{ route('admin.borrowed-book', $request->id) }}"
-                                        class="btn btn-info"><b>{{ trans('request.borrowed_book') }}</b></a>
-                                    <a href="{{ route('admin.undo', $request->id) }}"
-                                        class="btn btn-info"><b>{{ trans('request.undo') }}</b></a>
-                                @elseif($request->status === config('request.borrow'))
-                                    <a href="{{ route('admin.return-book', $request->id) }}"
-                                        class="btn btn-danger"><b>{{ trans('request.return_book') }}</b></a>
-                                    <a href="{{ route('admin.undo', $request->id) }}"
-                                        class="btn btn-info"><b>{{ trans('request.undo') }}</b></a>
-                                @elseif($request->status === config('request.return'))
-                                    <a href="{{ route('admin.undo', $request->id) }}"
-                                        class="btn btn-info"><b>{{ trans('request.undo') }}</b></a>
-                                @endif
+                                @switch($request->status)
+                                    @case (config('request.pending'))
+                                        <a href="{{ route('admin.accept', $request->id) }}"
+                                            class="btn btn-success"><b>{{ trans('request.accept') }}</b></a>
+                                        <a href="{{ route('admin.reject', $request->id) }}"
+                                            class="btn btn-danger"><b>{{ trans('request.reject') }}</b></a>
+                                    @break
+                                    @case (config('request.accept'))
+                                        <a href="{{ route('admin.borrowed-book', $request->id) }}"
+                                            class="btn btn-info"><b>{{ trans('request.borrowed_book') }}</b></a>
+                                        <a href="{{ route('admin.undo', $request->id) }}"
+                                            class="btn btn-info"><b>{{ trans('request.undo') }}</b></a>
+                                    @break
+                                    @case (config('request.reject'))
+                                        <a href="{{ route('admin.undo', $request->id) }}"
+                                            class="btn btn-info"><b>{{ trans('request.undo') }}</b></a>
+                                    @break
+                                    @case (config('request.borrow'))
+                                        <a href="{{ route('admin.return-book', $request->id) }}"
+                                            class="btn btn-danger"><b>{{ trans('request.return_book') }}</b></a>
+                                        <a href="{{ route('admin.undo', $request->id) }}"
+                                            class="btn btn-info"><b>{{ trans('request.undo') }}</b></a>
+                                    @break
+                                    @case (config('request.return'))
+                                        <a href="{{ route('admin.undo', $request->id) }}"
+                                            class="btn btn-info"><b>{{ trans('request.undo') }}</b></a>
+                                    @break
+                                    @default
+                                @endswitch
                             </div>
                         </div>
                     </div>
@@ -69,32 +76,44 @@
                                     <div id="view">
                                         <form action="" accept-charset="utf-8">
                                             <h1 class="text-center">{{ trans('request.info_request') }}</h1>
-                                            <h4>{{ trans('request.borrowed_date') }}: <b>{{ $request->borrowed_date }}</b>
+                                            <h4>{{ trans('request.borrowed_date') }}: <b>{{ date('d-m-Y', strtotime($request->borrowed_date)) }}</b>
                                             </h4>
-                                            <h4>{{ trans('request.return_date') }}: <b>{{ $request->return_date }}</b>
+                                            <h4>{{ trans('request.return_date') }}: <b>{{ date('d-m-Y', strtotime($request->return_date)) }}</b>
                                             </h4>
                                             <h4>
-                                                {{ trans('request.total_date') }}: <b> {{ $totalDate }}
-                                                    {{ trans('request.days') }}</b>
+                                                {{ trans('request.total_date') }}:
+                                                @if ($totalDate === config('request.total'))
+                                                    <b>{{ trans('request.in_day') }}</b>
+                                                @else
+                                                    <b>{{ $totalDate }} {{ trans('request.days') }}</b>
+                                                @endif
                                             </h4>
                                             <h4>
                                                 {{ trans('request.status') }}: <b>
-                                                    @if ($request->status === config('request.pending'))
-                                                        <span
-                                                            class="label label-warning">{{ trans('request.pending') }}</span>
-                                                    @elseif ($request->status === config('request.accept'))
-                                                        <span
-                                                            class="label label-primary">{{ trans('request.accept') }}</span>
-                                                    @elseif ($request->status === config('request.reject'))
-                                                        <span
-                                                            class="label label-danger">{{ trans('request.reject') }}</span>
-                                                    @elseif ($request->status === config('request.borrow'))
-                                                        <span
-                                                            class="label label-info">{{ trans('request.borrowing') }}</span>
-                                                    @elseif ($request->status === config('request.return'))
-                                                        <span
-                                                            class="label label-success">{{ trans('request.return') }}</span>
-                                                    @endif
+                                                @switch ($request->status)
+                                                    @case (config('request.pending'))
+                                                        <span class="label label-warning">{{ trans('request.pending') }}</span>
+                                                    @break
+                                                    @case (config('request.accept'))
+                                                        <span class="label label-primary">{{ trans('request.accept') }}</span>
+                                                    @break
+                                                    @case (config('request.reject'))
+                                                        <span class="label label-danger">{{ trans('request.reject') }}</span>
+                                                    @break
+                                                    @case (config('request.borrow'))
+                                                        <span class="label label-info">{{ trans('request.borrowing') }}</span>
+                                                    @break
+                                                    @case (config('request.return'))
+                                                        <span class="label label-success">{{ trans('request.return') }}</span>
+                                                    @break
+                                                    @case (config('request.late'))
+                                                        <span class="label label-danger">{{ trans('request.too_late') }}</span>
+                                                    @break
+                                                    @case (config('request.forget'))
+                                                        <span class="label label-danger">{{ trans('request.take_book_late') }}</span>
+                                                    @break
+                                                    @default
+                                                @endswitch
                                                 </b>
                                             </h4>
                                             <br />
