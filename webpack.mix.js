@@ -18,4 +18,12 @@ mix.js('resources/js/app.js', 'public/js')
     .styles('resources/css/client.css', 'public/css/client.css')
     .js('resources/js/sweet-alert.js', 'public/js')
     .js('resources/js/select2.js', 'public/js')
-    .js('resources/js/user_menu.js', 'public/js');
+    .js('resources/js/user_menu.js', 'public/js')
+    .js('resources/js/editor.js', 'public/js')
+    .js('resources/js/cate_popup.js', 'public/js')
+    .js('resources/js/cate_popup_form.js', 'public/js')
+    .js('resources/js/cart/add_cart.js', 'public/js')
+    .js('resources/js/cart/remove_cart.js', 'public/js')
+    .js('resources/js/notification.js', 'public/js')
+    .js('resources/js/reaction/like_book.js', 'public/js')
+    .js('resources/js/reaction/comment_book.js', 'public/js');
