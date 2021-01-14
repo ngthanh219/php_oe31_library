@@ -10,7 +10,8 @@
             </section>
             <section class="span8">
                 <ul class="top-nav2">
-                    <li><a href="#">{{ trans('client.cart') }}</a></li>
+                    <li><a href="{{ route('request') }}">{{ trans('client.list_request')}}</a></li>
+                    <li><a href="{{ route('cart')}}">{{ trans('client.cart') }}</a></li>
                 </ul>
                 <div class="search-bar">
                     <input name="" type="text" value="{{ trans('client.filter_input') }}" />

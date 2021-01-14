@@ -14,6 +14,20 @@ use DB;
 
 class RequestController extends Controller
 {
+    public function index()
+    {
+        $requests = Auth::user()->requests()->paginate(config('pagination.list_request'));
+
+        return view('client.list_request', compact('requests'));
+    }
+
+    public function show($id)
+    {   
+        $request = Request::findOrFail($id)->load('user');
+        
+        return view('client.detail_request', compact('request'));
+    }
+
     public function cart()
     {
         $categories = Category::with('children')->where('parent_id', config('category.parent_id'))->get();

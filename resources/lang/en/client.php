@@ -35,5 +35,9 @@ return [
     'about_us' => 'About us',
     'resources' => 'Resources',
     'design_by' => 'Design by: ',
-    'name_websites' => 'NguyenTienThanh - BuiQuangAnh'
+    'name_websites' => 'NguyenTienThanh - BuiQuangAnh',
+    'detail_request' => 'Detail Request',
+    'list_request' => 'List request',
+    'login' => 'Login',
+    'create_account' => 'Create account',
 ];

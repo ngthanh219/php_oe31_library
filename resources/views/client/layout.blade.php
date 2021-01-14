@@ -16,7 +16,7 @@
                 <section class="span9 first wapper">
                     @yield('content')
                 </section>
-                @if (Route::current()->getName() != 'cart')
+                @if (Route::current()->getName() != 'cart' && Route::current()->getName()!= 'request' && Route::current()->getName()!= 'request-detail')
                     <section class="span3">
                         <div class="side-holder">
                             <article class="shop-by-list">
