@@ -19,4 +19,5 @@ return [
     'actions' => 'Actions',
     'unknow' => 'Unknow',
     'notifi' => 'Notification',
+    'author_edit' => 'Author Edit'
 ];

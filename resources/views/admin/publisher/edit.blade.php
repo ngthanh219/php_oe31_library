@@ -25,7 +25,9 @@
                                     @method('PUT')
                                     <div class="form-group">
                                         <label for="inputName"
-                                            class="col-sm-2 control-label">{{ trans('publisher.name') }}</label>
+                                            class="col-sm-2 control-label">{{ trans('publisher.name') }}
+                                            <span class="text-danger">*</span>
+                                        </label>
                                         <div class="col-sm-10">
                                             <input type="text" class="form-control" name="name"
                                                 value="{{ $publisher->name }}" />
