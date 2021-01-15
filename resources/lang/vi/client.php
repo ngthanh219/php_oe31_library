@@ -12,4 +12,8 @@ return [
     'shop_by' => 'Tìm theo',
     'en' => 'Tiếng Anh',
     'vi' => 'Tiếng Việt',
+    'detail_request' => 'Chi tiết yêu cầu',
+    'list_request' => 'Danh sách yêu cầu',
+    'login' => 'Đăng nhập',
+    'create_account' => 'Tạo tài khoản',
 ];

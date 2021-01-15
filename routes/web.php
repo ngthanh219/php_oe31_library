@@ -47,6 +47,8 @@ Route::group(['middleware' => 'language'], function () {
         });
         Route::resource('comments', 'CommentController');
         Route::get('react/{book}', 'ReactionController@react')->name('react');
+        Route::get('request', 'RequestController@index')->name('request');
+        Route::get('request-detail/{request}', 'RequestController@show')->name('request-detail');
         Route::get('vote', 'ReactionController@vote')->name('vote');
         Route::post('request', 'RequestController@request')->name('request');
     });
