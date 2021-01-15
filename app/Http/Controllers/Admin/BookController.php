@@ -9,6 +9,8 @@ use App\Models\Book;
 use App\Models\Category;
 use App\Models\Publisher;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+use Auth;
 
 class BookController extends Controller
 {
@@ -19,9 +21,13 @@ class BookController extends Controller
      */
     public function index()
     {
-        $books = Book::orderBy('id', 'DESC')->get();
+        if (Auth::user()->can('book.index')) {
+            $books = Book::orderBy('id', 'DESC')->paginate(config('pagination.limit'));
 
-        return view('admin.book.index', compact('books'));
+            return view('admin.book.index', compact('books'));
+        } else {
+            abort(Response::HTTP_NOT_FOUND);
+        }
     }
 
     /**
@@ -31,11 +37,15 @@ class BookController extends Controller
      */
     public function create()
     {
-        $categories = Category::where('parent_id', '<>', config('category.parent_id'))->get();
-        $authors = Author::all();
-        $publishers = Publisher::all();
+        if (Auth::user()->can('book.create')) {
+            $categories = Category::where('parent_id', '<>', config('category.parent_id'))->get();
+            $authors = Author::all();
+            $publishers = Publisher::all();
 
-        return view('admin.book.create', compact('categories', 'authors', 'publishers'));
+            return view('admin.book.create', compact('categories', 'authors', 'publishers'));
+        } else {
+            abort(Response::HTTP_NOT_FOUND);
+        }
     }
 
     /**
@@ -46,23 +56,27 @@ class BookController extends Controller
      */
     public function store(BookRequest $request)
     {
-        $data = $request->all();
-        $data['in_stock'] = $data['total'];
-        if (!isset($data['image'])) {
-            $data['image'] = '';
-        } else {
-            $image = time() . '_' . $data['image']->getClientOriginalName();
-            $data['image']->move('upload/book', $image);
-            $data['image'] = $image;
-        }
-        $book = Book::create($data);
-        foreach ($data['category_id'] as $category) {
-            $item = Category::findOrFail($category);
-            $book->categories()->attach($item);
-        }
-        $request->session()->flash('infoMessage', trans('book.create_book_success'));
+        if (Auth::user()->can('book.store')) {
+            $data = $request->all();
+            $data['in_stock'] = $data['total'];
+            if (!isset($data['image'])) {
+                $data['image'] = '';
+            } else {
+                $image = time() . '_' . $data['image']->getClientOriginalName();
+                $data['image']->move('upload/book', $image);
+                $data['image'] = $image;
+            }
+            $book = Book::create($data);
+            foreach ($data['category_id'] as $category) {
+                $item = Category::findOrFail($category);
+                $book->categories()->attach($item);
+            }
+            $request->session()->flash('infoMessage', trans('book.create_book_success'));
 
-        return redirect()->route('admin.books.index');
+            return redirect()->route('admin.books.index');
+        } else {
+            abort(Response::HTTP_NOT_FOUND);
+        }
     }
 
     /**
@@ -73,13 +87,17 @@ class BookController extends Controller
      */
     public function show($id)
     {
-        $book = Book::findOrFail($id)->load('author', 'publisher', 'categories');
-        if ($book) {
-            return view('admin.book.detail', compact('book'));
-        } else {
-            session()->flash('infoMessage', trans('book.isset_id'));
+        if (Auth::user()->can('book.show')) {
+            $book = Book::findOrFail($id)->load('author', 'publisher', 'categories');
+            if ($book) {
+                return view('admin.book.detail', compact('book'));
+            } else {
+                session()->flash('infoMessage', trans('book.isset_id'));
 
-            return redirect()->route('admin.books.index');
+                return redirect()->route('admin.books.index');
+            }
+        } else {
+            abort(Response::HTTP_NOT_FOUND);
         }
     }
 
@@ -91,12 +109,16 @@ class BookController extends Controller
      */
     public function edit($id)
     {
-        $categories = Category::with('books')->where('parent_id', '<>', config('category.parent_id'))->get();
-        $authors = Author::with('books')->get();
-        $publishers = Publisher::with('books')->get();
-        $book = Book::with('author', 'publisher', 'categories')->findOrFail($id);
+        if (Auth::user()->can('book.edit')) {
+            $categories = Category::with('books')->where('parent_id', '<>', config('category.parent_id'))->get();
+            $authors = Author::with('books')->get();
+            $publishers = Publisher::with('books')->get();
+            $book = Book::with('author', 'publisher', 'categories')->findOrFail($id);
 
-        return view('admin.book.edit', compact('categories', 'authors', 'publishers', 'book'));
+            return view('admin.book.edit', compact('categories', 'authors', 'publishers', 'book'));
+        } else {
+            abort(Response::HTTP_NOT_FOUND);
+        }
     }
 
     /**
@@ -108,20 +130,24 @@ class BookController extends Controller
      */
     public function update(BookRequest $request, $id)
     {
-        $book = Book::findOrFail($id);
-        $data = $request->all();
-        if (isset($data['image'])) {
-            $image = time() . '_' . $data['image']->getClientOriginalName();
-            $data['image']->move('upload/book', $image);
-            $data['image'] = $image;
-        } else {
-            $data['image'] = $book->image;
-        }
-        $book->categories()->sync($data['category_id']);
-        $book->update($data);
-        $request->session()->flash('infoMessage', trans('book.create_book_success'));
+        if (Auth::user()->can('book.update')) {
+            $book = Book::findOrFail($id);
+            $data = $request->all();
+            if (isset($data['image'])) {
+                $image = time() . '_' . $data['image']->getClientOriginalName();
+                $data['image']->move('upload/book', $image);
+                $data['image'] = $image;
+            } else {
+                $data['image'] = $book->image;
+            }
+            $book->categories()->sync($data['category_id']);
+            $book->update($data);
+            $request->session()->flash('infoMessage', trans('book.create_book_success'));
 
-        return redirect()->route('admin.books.index');
+            return redirect()->route('admin.books.index');
+        } else {
+            abort(Response::HTTP_NOT_FOUND);
+        }
     }
 
     /**
@@ -132,19 +158,27 @@ class BookController extends Controller
      */
     public function destroy($id)
     {
-        $book = Book::findOrFail($id);
-        $book->categories()->sync([]);
-        $book->delete();
-        session()->flash('infoMessage', trans('book.delete_book_success'));
+        if (Auth::user()->can('book.destroy')) {
+            $book = Book::findOrFail($id);
+            $book->categories()->sync([]);
+            $book->delete();
+            session()->flash('infoMessage', trans('book.delete_book_success'));
 
-        return redirect()->route('admin.books.index');
+            return redirect()->route('admin.books.index');
+        } else {
+            abort(Response::HTTP_NOT_FOUND);
+        }
     }
 
     public function search(Request $request)
     {
-        $books = Book::where('name', 'LIKE', '%' . $request->key . '%', )->orderBy('id', 'DESC')->get();
+        if (Auth::user()->can('book.search')) {
+            $books = Book::where('name', 'LIKE', '%' . $request->key . '%', )->orderBy('id', 'DESC')->get();
 
-        return view('admin.book.search', compact('books'));
+            return view('admin.book.search', compact('books'));
+        } else {
+            abort(Response::HTTP_NOT_FOUND);
+        }
     }
 
     public function catePopup()

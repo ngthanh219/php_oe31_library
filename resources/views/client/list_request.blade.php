@@ -73,7 +73,7 @@
                     </table>
                     <div class="pagination">
                         <ul>
-                            @if ($requests->lastPage())
+                            @if ($requests->lastPage() > config('pagination.total_page'))
                                 @for ($i = 1; $i <= $requests->lastPage(); $i++)
                                     @if (isset($page) && $page == $i)
                                         <li class="active">

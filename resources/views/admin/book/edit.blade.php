@@ -25,7 +25,10 @@
                                     <div class="col-md-12">
                                         <div class="col-md-9 col-9-form general">
                                             <div class="form-group">
-                                                <label class="label-general">{{ trans('book.status') }}</label>
+                                                <label class="label-general">
+                                                    {{ trans('book.status') }}
+                                                    <span class="text-danger">*</span>
+                                                </label>
                                                 <select name="status" class="form-control select2 general">
                                                     @if ($book->status == config('book.visible'))
                                                         <option value="{{ config('book.visible') }}" selected>
@@ -44,7 +47,10 @@
                                                 @endif
                                             </div>
                                             <div class="form-group">
-                                                <label>{{ trans('book.name') }}</label>
+                                                <label>
+                                                    {{ trans('book.name') }}
+                                                    <span class="text-danger">*</span>
+                                                </label>
                                                 <input type="text" class="form-control" name="name"
                                                     value="{{ $book->name }}">
                                                 @if ($errors->has('name'))
@@ -54,6 +60,7 @@
                                             <div class="form-group">
                                                 <label>
                                                     {{ trans('category.category') }}
+                                                    <span class="text-danger">*</span>
                                                     <a id="category-form" class="cus">
                                                         <i class="fa fa-plus"></i>
                                                     </a>
@@ -77,7 +84,10 @@
                                                 @endif
                                             </div>
                                             <div class="form-group">
-                                                <label for="inputName">{{ trans('admin.author') }}</label>
+                                                <label for="inputName">
+                                                    {{ trans('admin.author') }}
+                                                    <span class="text-danger">*</span>
+                                                </label>
                                                 <select name="author_id" class="form-control select2">
                                                     @foreach ($authors as $author)
                                                         @if ($author->books->contains($book))
@@ -93,7 +103,10 @@
                                                 @endif
                                             </div>
                                             <div class="form-group">
-                                                <label for="inputName">{{ trans('admin.publisher') }}</label>
+                                                <label for="inputName">
+                                                    {{ trans('admin.publisher') }}
+                                                    <span class="text-danger">*</span>
+                                                </label>
                                                 <select name="publisher_id" class="form-control select2">
                                                     @foreach ($publishers as $publisher)
                                                         @if ($publisher->books->contains($book))
@@ -121,7 +134,10 @@
                                         </div>
                                         <div class="col-md-3">
                                             <div class="form-group">
-                                                <label>{{ trans('book.image') }}</label>
+                                                <label>
+                                                    {{ trans('book.image') }}
+                                                    <span class="text-danger">*</span>
+                                                </label>
                                                 <input type="file" id="images" name="image">
                                                 <div class="col-md-12">
                                                     <div class="row">
@@ -140,7 +156,10 @@
                                                 @endif
                                             </div>
                                             <div class="form-group">
-                                                <label>{{ trans('book.in_stock') }}</label>
+                                                <label>
+                                                    {{ trans('book.in_stock') }}
+                                                    <span class="text-danger">*</span>
+                                                </label>
                                                 <input name="in_stock" class="form-control" type="number"
                                                     value="{{ $book->in_stock }}" min="0" max="100">
                                                 @if ($errors->has('in_stock'))
@@ -148,7 +167,10 @@
                                                 @endif
                                             </div>
                                             <div class="form-group">
-                                                <label>{{ trans('book.total') }}</label>
+                                                <label>
+                                                    {{ trans('book.total') }}
+                                                    <span class="text-danger">*</span>
+                                                </label>
                                                 <input name="total" class="form-control" type="number"
                                                     value="{{ $book->total }}" min="0" max="100">
                                                 @if ($errors->has('total'))

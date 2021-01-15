@@ -85,7 +85,9 @@
                                 </tbody>
                             </table>
                             <div class="col-sm-12 text-right">
-                                <div class="dataTables_paginate paging_simple_numbers"></div>
+                                <div class="dataTables_paginate paging_simple_numbers">
+                                    {{ $users->links() }}
+                                </div>
                             </div>
                         </div>
                     </div>

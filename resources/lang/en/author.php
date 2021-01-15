@@ -6,7 +6,7 @@ return [
     'name' => 'Name',
     'author_list' => 'Author List',
     'authors_manager' => 'Author Manager',
-    'avatar' => 'Avatar',
+    'image' => 'Image',
     'description' => 'Description',
     'date_of_born' => 'Date of born',
     'date_of_death' => 'Date of death',

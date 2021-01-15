@@ -44,4 +44,8 @@ return [
     'in_day' => 'In day',
     'too_late' => 'Too late',
     'take_book_late' => 'Haven`t taken the book yet',
+    'over_allow' => 'You were rejected for returning the book more than 2 times lates',
+    'borrowed' => 'You have borrowed some books already',
+    'fail_max_book' => 'You have borrowed more than 5 books',
+    'fail_max_date' => 'You can only borrow for about 30 days',
 ];

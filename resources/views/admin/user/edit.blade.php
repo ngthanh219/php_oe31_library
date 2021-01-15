@@ -23,7 +23,10 @@
                                     @csrf
                                     @method('PUT')
                                     <div class="form-group">
-                                        <label for="inputName" class="col-sm-2 control-label">{{ trans('user.name') }}</label>
+                                        <label for="inputName" class="col-sm-2 control-label">
+                                            {{ trans('user.name') }}
+                                            <span class="text-danger">*</span>
+                                        </label>
                                         <div class="col-sm-10">
                                             <input type="text" class="form-control" name="name" value="{{ $user->name }}" />
                                             @if ($errors->has('name'))
@@ -32,7 +35,10 @@
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <label for="inputName" class="col-sm-2 control-label">{{ trans('user.address') }}</label>
+                                        <label for="inputName" class="col-sm-2 control-label">
+                                            {{ trans('user.address') }}
+                                            <span class="text-danger">*</span>
+                                        </label>
                                         <div class="col-sm-10">
                                             <input type="text" class="form-control" name="address" value="{{ $user->address }}" />
                                             @if ($errors->has('address'))
@@ -41,7 +47,10 @@
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <label for="inputName" class="col-sm-2 control-label">{{ trans('user.phone') }}</label>
+                                        <label for="inputName" class="col-sm-2 control-label">
+                                            {{ trans('user.phone') }}
+                                            <span class="text-danger">*</span>
+                                        </label>
                                         <div class="col-sm-10">
                                             <input type="number" class="form-control" name="phone" value="{{ $user->phone }}" />
                                             @if ($errors->has('phone'))
@@ -50,7 +59,10 @@
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <label for="inputName" class="col-sm-2 control-label">{{ trans('user.email') }}</label>
+                                        <label for="inputName" class="col-sm-2 control-label">
+                                            {{ trans('user.email') }}
+                                            <span class="text-danger">*</span>
+                                        </label>
                                         <div class="col-sm-10">
                                             <input type="text" class="form-control none-event" name="email" value="{{ $user->email }}" />
                                             @if ($errors->has('email'))
@@ -62,7 +74,10 @@
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <label for="inputName" class="col-sm-2 control-label">{{ trans('user.password') }}</label>
+                                        <label for="inputName" class="col-sm-2 control-label">
+                                            {{ trans('user.password') }}
+                                            <span class="text-danger">*</span>
+                                        </label>
                                         <div class="col-sm-10">
                                             <input type="password" class="form-control" name="password" />
                                             @if ($errors->has('password'))
