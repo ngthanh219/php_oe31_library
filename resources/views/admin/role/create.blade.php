@@ -23,7 +23,9 @@
                                     @csrf
                                     <div class="form-group">
                                         <label for="inputName"
-                                            class="col-sm-2 control-label">{{ trans('role.name') }}</label>
+                                            class="col-sm-2 control-label">{{ trans('role.name') }}
+                                            <span class="text-danger">*</span>
+                                        </label>
                                         <div class="col-sm-10">
                                             <input type="text" class="form-control" name="name" value="{{ old('name') }}" />
                                             @if ($errors->has('name'))

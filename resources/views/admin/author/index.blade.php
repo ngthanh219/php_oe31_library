@@ -21,7 +21,7 @@
                             </h3>
                             <div class="box-tools pull-right">
                                 <button type="button" class="btn btn-box-tool" data-widget="collapse"><i
-                                        class="fa fa-minus"></i>
+                                    class="fa fa-minus"></i>
                                 </button>
                             </div>
                         </div>
@@ -94,7 +94,9 @@
                                 </tbody>
                             </table>
                             <div class="col-sm-12 text-right">
-                                <div class="dataTables_paginate paging_simple_numbers"></div>
+                                <div class="dataTables_paginate paging_simple_numbers">
+                                    {{ $authors->links() }}
+                                </div>
                             </div>
                         </div>
                     </div>

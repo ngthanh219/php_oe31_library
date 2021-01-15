@@ -16,7 +16,7 @@ class AuthorController extends Controller
      */
     public function index()
     {
-        $authors = Author::orderBy('id', 'DESC')->get();
+        $authors = Author::orderBy('id', 'DESC')->paginate(config('pagination.limit_page'));
 
         return view('admin.author.index', compact('authors'));
     }
