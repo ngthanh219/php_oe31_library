@@ -130,9 +130,9 @@
         </div>
         <div class="tabbable">
             <ul class="nav nav-tabs">
-                <li class="active"><a href="#" data-toggle="tab">{{ trans('category.category') }}</a></li>
-                <li><a href="#" data-toggle="tab">{{ trans('author.author') }}</a></li>
-                <li><a href="#" data-toggle="tab">{{ trans('publisher.publisher') }}</a></li>
+                <li class="active"><a href="#pane1" data-toggle="tab">{{ trans('category.category') }}</a></li>
+                <li><a href="#pane2" data-toggle="tab">{{ trans('author.author') }}</a></li>
+                <li><a href="#pane3" data-toggle="tab">{{ trans('publisher.publisher') }}</a></li>
             </ul>
             <div class="tab-content">
                 <div id="pane1" class="tab-pane active">
@@ -142,8 +142,8 @@
                 </div>
                 <div id="pane2" class="tab-pane">
                     <h4> <b>{{ trans('author.name') }}</b>: {{ $book->author->name }}</h4>
-                    <h4> <b>{{ trans('author.date_born') }}</b>: {{ $book->author->date_of_born }}</h4>
-                    <h4> <b>{{ trans('author.date_death') }}:</b> {{ $book->author->date_of_death }}</h4>
+                    <h4> <b>{{ trans('author.date_born') }}</b>: {{ $book->author->date_of_born ?  $book->author->date_of_born : trans('author.unknow') }}</h4>
+                    <h4> <b>{{ trans('author.date_death') }}:</b> {{ $book->author->date_of_death ?  $book->author->date_of_death : trans('author.unknow') }}</h4>
                     <h4> <b>{{ trans('author.description') }}:</b>
                         {{ $book->author->description == '' ? trans('author.unknow') : $book->author->description }}
                     </h4>
@@ -165,8 +165,8 @@
                 @foreach ($book->categories as $category)
                     @foreach ($category->books as $related)
                         `<div class="slide">
-                            <a href="#">
-                                <img src="{{ $related->image ? asset('upload/book' .
+                            <a href="{{ route('detail', $related->id)}}">
+                                <img src="{{ $related->image ? asset(config('book.url') .
                                     $related->image) : '' }}" alt="{{ $related->name }}" class="pro-img" /></a>
                             </a>
                             <span class="title">
