@@ -5,6 +5,13 @@
 .span4.slide.wapper {
     margin-left: 0 !important;
     margin-right: 10px;
+    height: 300px;
+}
+
+.features-books .slide .title {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .title.wapper {

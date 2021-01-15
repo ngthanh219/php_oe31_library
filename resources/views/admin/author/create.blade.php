@@ -23,8 +23,10 @@
                                     enctype="multipart/form-data">
                                     @csrf
                                     <div class="form-group">
-                                        <label for="inputName"
-                                            class="col-sm-2 control-label">{{ trans('author.name') }}</label>
+                                        <label for="inputName" class="col-sm-2 control-label">
+                                            {{ trans('author.name') }}
+                                            <span class="text-danger">*</span>
+                                        </label>
                                         <div class="col-sm-10">
                                             <input type="text" class="form-control" name="name" />
                                             @if ($errors->has('name'))
@@ -33,7 +35,10 @@
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <label for="image" class="col-sm-2 control-label">{{ trans('author.image') }}</label>
+                                        <label for="image" class="col-sm-2 control-label">
+                                            {{ trans('author.image') }}
+                                            <span class="text-danger">*</span>
+                                        </label>
                                         <div class="col-sm-10">
                                             <input type="file" class="form-control-file" id="image" name="image">
                                         </div>
