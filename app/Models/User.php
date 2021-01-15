@@ -77,6 +77,6 @@ class User extends Authenticatable
     {
         $check = optional(optional($this->role)->permissions)->contains($permission);
 
-        return isset($check);
+        return $check;
     }
 }

@@ -8,15 +8,15 @@
                     </a>
                 </h1>
             </section>
-            <section class="span8">
+            <section class="span8 filter">
                 <ul class="top-nav2">
-                    <li><a href="{{ route('request') }}">{{ trans('client.list_request')}}</a></li>
-                    <li><a href="{{ route('cart')}}">{{ trans('client.cart') }}</a></li>
+                    <li><a href="{{ route('request') }}">{{ trans('client.list_request') }}</a></li>
+                    <li><a href="{{ route('cart') }}">{{ trans('client.cart') }}</a></li>
                 </ul>
                 <div class="search-bar">
-                    <input name="" type="text" value="{{ trans('client.filter_input') }}" />
-                    <input name="" type="button" value="{{ trans('client.search') }}" />
+                    <input name="search-client-book" id="search" type="text" value="{{ trans('client.filter_input') }}" />
                 </div>
+                <div id="data-search" class="box-filter"></div>
             </section>
         </section>
     </section>
@@ -35,3 +35,7 @@
         </div>
     </nav>
 </header>
+@section('script')
+    <script type="text/javascript" src="{{ asset('js/search.js') }}" defer>
+    </script>
+@endsection

@@ -3,21 +3,23 @@
     <div class="tab-pane active" id="settings">
         <form id="form" class="form-horizontal" method="post" enctype="multipart/form-data">
             <div class="form-group">
-                <label for="inputName" class="col-sm-3 control-label">{{ trans('category.parent_name') }}</label>
+                <label for="inputName" class="col-sm-3 control-label">
+                    {{ trans('category.parent_name') }}
+                    <span class="text-danger">*</span>
+                </label>
                 <div class="col-sm-7">
                     <input type="text" class="form-control" name="parent_name" id="parent_name" />
-                    @if ($errors->has('parent_name'))
-                        <div class="error">{{ $errors->first('parent_name') }}</div>
-                    @endif
+                    <div class="error" id="errorParent"></div>
                 </div>
             </div>
             <div class="form-group">
-                <label for="inputName" class="col-sm-3 control-label">{{ trans('category.child_name') }}</label>
+                <label for="inputName" class="col-sm-3 control-label">
+                    {{ trans('category.child_name') }}
+                    <span class="text-danger">*</span>
+                </label>
                 <div class="col-sm-7">
                     <input type="text" class="form-control" name="child_name" id="child_name" />
-                    @if ($errors->has('child_name'))
-                        <div class="error">{{ $errors->first('child_name') }}</div>
-                    @endif
+                    <div class="error" id="errorChild"></div>
                 </div>
             </div>
             <div class="form-group">

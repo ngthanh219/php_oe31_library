@@ -68,3 +68,4 @@ Route::get('detail/{book}', 'BookController@getDetailBook')->name('detail');
 Route::get('cart', 'RequestController@cart')->name('cart');
 Route::get('add-cart/{book}', 'RequestController@addToCart')->name('add-cart');
 Route::get('remove-cart/{book}', 'RequestController@removeCart')->name('remove-cart');
+Route::get('search-client-book', 'BookController@search')->name('search-client-book');

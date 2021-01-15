@@ -39,4 +39,14 @@ class BookController extends Controller
 
         return view('client.detail_book', compact('book'));
     }
+
+    public function search(Request $request)
+    {
+        $books = Book::where('name', 'LIKE', '%' . $request->key . '%')
+            ->where('status', config('book.visible'))
+            ->orderBy('id', 'DESC')
+            ->get();
+
+        return view('client.search_book', compact('books'));
+    }
 }

@@ -86,7 +86,7 @@
                             </table>
                             <div class="col-sm-12 text-right">
                                 <div class="dataTables_paginate paging_simple_numbers">
-                                    {{ $users->links() }}
+                                    {{ $users->links }}
                                 </div>
                             </div>
                         </div>
@@ -95,11 +95,10 @@
             </div>
         </section>
     </div>
-    @section('script')
-    <script type="text/javascript" src="{{ asset('bower_components/admin-lte/dist/js/component/search/search.js') }}"
-        defer>
+@section('script')
+    <script type="text/javascript" src="{{ asset('bower_components/admin-lte/dist/js/component/search/search.js') }}" defer>
     </script>
     <script type="text/javascript" src="{{ asset('bower_components/admin-lte/dist/js/component/general.js') }}" defer>
     </script>
-    @endsection
+@endsection
 @endsection
