@@ -17,10 +17,10 @@ Route::get('/', 'Auth\LoginController@showLoginForm')->name('login');
 
 Auth::routes();
 
-Route::group(['middleware' => 'language'], function() {
+Route::group(['middleware' => 'language'], function () {
     Route::group(['middleware' => 'auth'], function () {
         Route::group(['middleware' => 'admin'], function () {
-    
+
             Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'as' => 'admin.'], function () {
                 Route::get('dashboard', 'HomeController@index')->name('dashboard');
                 Route::get('publishers/export', 'PublisherController@export')->name('publishers.export');
@@ -48,10 +48,18 @@ Route::group(['middleware' => 'language'], function() {
         Route::resource('comments', 'CommentController');
         Route::get('react/{book}', 'ReactionController@react')->name('react');
         Route::get('vote', 'ReactionController@vote')->name('vote');
+        Route::post('request', 'RequestController@request')->name('request');
     });
-    
+
     Route::get('/', 'BookController@index')->name('home');
     Route::get('category-book/{categoryId}', 'BookController@getCategory')->name('category-book');
     Route::get('detail/{book}', 'BookController@getDetailBook')->name('detail');
     Route::get('change-language/{language}', 'ReactionController@changeLanguage')->name('change-language');
 });
+
+Route::get('/', 'BookController@index')->name('home');
+Route::get('category-book/{categoryId}', 'BookController@getCategory')->name('category-book');
+Route::get('detail/{book}', 'BookController@getDetailBook')->name('detail');
+Route::get('cart', 'RequestController@cart')->name('cart');
+Route::get('add-cart/{book}', 'RequestController@addToCart')->name('add-cart');
+Route::get('remove-cart/{book}', 'RequestController@removeCart')->name('remove-cart');

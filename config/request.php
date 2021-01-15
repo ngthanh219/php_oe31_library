@@ -10,4 +10,6 @@ return [
     'forget' => 6,
     'book' => 1,
     'total' => 0,
+    'max_book' => 5,
+    'max_date' => 30,
 ];

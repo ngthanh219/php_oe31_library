@@ -27,7 +27,7 @@
                         <a href="{{ route('change-language', ['language' => 'vi']) }}">{{ trans('client.vi') }}</a>
                     </li>
                 </ul>
-                <div class="c-btn"> <a href="#" class="cart-btn">{{ trans('client.cart') }}</a>
+                <div class="c-btn"> <a href="{{ route('cart') }}" class="cart-btn">{{ trans('client.cart') }}</a>
                     <div class="btn-group">
                         <button data-toggle="dropdown" class="btn btn-mini dropdown-toggle">
                             {{ trans('client.item_cart') }}

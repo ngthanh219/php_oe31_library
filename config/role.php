@@ -1,6 +1,6 @@
 <?php
 
 return [
-    'client' => 0,
+    'client' => 1,
     'super_admin' => 3,
 ];

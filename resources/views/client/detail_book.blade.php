@@ -106,9 +106,20 @@
                             <div class="rating-list">
                                 <div class="rating-box">
                                     @foreach ($votes as $vote)
-                                        <input type="radio" name="vote" class="vote" id="start{{ $vote }}"
-                                            value="{{ $vote }}">
-                                        <label for="start{{ $vote }}"></label>
+                                        @if ($book->rates->isEmpty())
+                                            <input type="radio" name="vote" class="vote" id="start{{ $vote }}" value="{{ $vote }}">
+                                            <label for="start{{ $vote }}"></label>
+                                        @else
+                                            @foreach ($book->rates as $item)
+                                                @if ($item->vote == $vote)
+                                                    <input type="radio" name="vote" class="vote" id="start{{ $vote }}" value="{{ $vote }}" checked>
+                                                    <label for="start{{ $vote }}"></label>
+                                                @else
+                                                    <input type="radio" name="vote" class="vote" id="start{{ $vote }}" value="{{ $vote }}">
+                                                    <label for="start{{ $vote }}"></label>
+                                                @endif
+                                            @endforeach
+                                        @endif
                                     @endforeach
                                 </div>
                             </div>
@@ -194,7 +205,9 @@
         </section>
     </section>
 @section('script')
+    <script src="{{ asset('js/add_cart.js') }}" defer></script>
     <script src="{{ asset('js/like_book.js') }}" defer></script>
     <script src="{{ asset('js/comment_book.js') }}" defer></script>
+    <script src="{{ asset('js/vote_book.js') }}" defer></script>
 @endsection
 @endsection
