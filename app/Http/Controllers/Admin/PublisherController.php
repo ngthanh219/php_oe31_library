@@ -113,6 +113,7 @@ class PublisherController extends Controller
         if (!Auth::user()->can('publisher.update')) {
             abort(Response::HTTP_FORBIDDEN);
         }
+
         $publisher = $this->publisherRepository->find($id);
         $image = $publisher->image;
         if ($request->hasFile('image')) {
@@ -120,6 +121,7 @@ class PublisherController extends Controller
             $file->move('upload/publisher', $file->getClientOriginalName());
             $image = $file->getClientOriginalName();
         }
+
         $result = $this->publisherRepository->update($id, [
             'name' => $request->name,
             'image' => $image,
@@ -128,6 +130,7 @@ class PublisherController extends Controller
             'address' => $request->address,
             'description' => $request->description,
         ]);
+
         if ($result) {
             return redirect()->route('admin.publishers.index')->with('infoMessage',
                 trans('message.publisher_update_success'));
@@ -148,11 +151,13 @@ class PublisherController extends Controller
         if (!Auth::user()->can('publisher.destroy')) {
             abort(Response::HTTP_FORBIDDEN);
         }
+
         $publisher = $this->publisherRepository->loadBook($id);
         if (!$publisher->books->isEmpty()) {
             return redirect()->route('admin.publishers.index')->with('infoMessage',
                 trans('message.publisher_has_books'));
         }
+
         $result = $this->publisherRepository->destroy($id);
         if ($result) {
             return redirect()->route('admin.publishers.index')->with('infoMessage',
@@ -168,12 +173,14 @@ class PublisherController extends Controller
         if (!Auth::user()->can('publisher.export')) {
             abort(Response::HTTP_FORBIDDEN);
         }
+
         $item = new PublishersExport;
-        if ($item->view()) {
-            return $this->publisherRepository->export($item, 'publishers.xlsx');
+        $publishers = $this->publisherRepository->getAll();
+        if ($publishers->isEmpty()) {
+            return redirect()->back()->with('infoMessage',
+                trans('message.publisher_no_data'));
         }
 
-        return redirect()->back()->with('infoMessage',
-            trans('message.publisher_no_data'));
+        return $this->publisherRepository->export($item, 'publishers.xlsx');
     }
 }
