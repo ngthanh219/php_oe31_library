@@ -97,20 +97,29 @@ class RequestController extends Controller
     public function request(OrderRequest $request)
     {
         $cart = session()->get('cart');
+        $status = [
+            config('request.return'),
+            config('request.reject'),
+            config('request.forget')
+        ];
         $user = Auth::user()->load([
             'requests.books',
-            'requests' => function ($query) {
-                $query->where('status', '<>', config('request.return'))->where('status', '<>', config('request.reject'))->withCount('books');
+            'requests' => function ($query) use ($status) {
+                $query->whereNotIn('status', $status)->withCount('books');
             },
         ]);
-
+        $idBook = [];
+        foreach($user->requests as $req) {
+            array_push($idBook, $req->id);
+        }
+    
         if ($user->status == config('user.block')) {
             return redirect()->route('cart')->with('mess', trans('request.over_allow'));
         }
 
         $totalBook = config('request.pending');
         $borrowedBook = DB::table('book_request')
-            ->whereIn('request_id', $user->requests()->pluck('id')->toArray())
+            ->whereIn('request_id', $idBook)
             ->pluck('book_id')
             ->toArray();
         $bookInCart = array_keys($cart);
