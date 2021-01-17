@@ -9,6 +9,20 @@ use Tests\ModelTestCase;
 
 class RoleTest extends ModelTestCase
 {
+    protected $relationole;
+
+    public function setUp(): void
+    {
+        parent::setUp();
+        $this->role = new Role();
+    }
+
+    public function tearDown(): void
+    {
+        parent::tearDown();
+        unset($this->role);
+    }
+
     public function test_model_configuration()
     {
         $this->runConfigurationAssertions(new Role(), [
@@ -18,17 +32,17 @@ class RoleTest extends ModelTestCase
 
     public function test_users_relation()
     {
-        $m = new Role();
-        $r = $m->users();
+        $modelRole = new Role();
+        $relation = $modelRole->users();
 
-        $this->assertHasManyRelation($r, $m, new User());
+        $this->assertHasManyRelation($relation, $modelRole, new User());
     }
 
     public function test_permissions_relation()
     {
-        $m = new Role();
-        $r = $m->permissions();
+        $modelRole = new Role();
+        $relation = $modelRole->permissions();
 
-        $this->assertBelongsToManyRelation($r, 'role_id', 'per_id');
+        $this->assertBelongsToManyRelation($relation, 'role_id', 'per_id');
     }
 }

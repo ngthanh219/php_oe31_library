@@ -9,6 +9,20 @@ use Tests\ModelTestCase;
 
 class RequestTest extends ModelTestCase
 {
+    protected $relationequest;
+
+    public function setUp(): void
+    {
+        parent::setUp();
+        $this->request = new Request();
+    }
+
+    public function tearDown(): void
+    {
+        parent::tearDown();
+        unset($this->request);
+    }
+
     public function test_model_configuration()
     {
         $this->runConfigurationAssertions(new Request(), [
@@ -22,17 +36,17 @@ class RequestTest extends ModelTestCase
 
     public function test_user_relation()
     {
-        $m = new Request();
-        $r = $m->user();
+        $modelRequest = new Request();
+        $relation = $modelRequest->user();
 
-        $this->assertBelongsToRelation($r, $m, new User(), 'user_id');
+        $this->assertBelongsToRelation($relation, $modelRequest, new User(), 'user_id');
     }
 
     public function test_books_relation()
     {
-        $m = new Request();
-        $r = $m->books();
+        $modelRequest = new Request();
+        $relation = $modelRequest->books();
 
-        $this->assertBelongsToManyRelation($r, 'request_id', 'book_id');
+        $this->assertBelongsToManyRelation($relation, 'request_id', 'book_id');
     }
 }

@@ -5,6 +5,8 @@ namespace App\Providers;
 use App\Models\Author;
 use App\Models\Book;
 use App\Models\Category;
+use App\Repositories\Author\AuthorRepository;
+use App\Repositories\Author\AuthorRepositoryInterface;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\ServiceProvider;
 
@@ -27,6 +29,11 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        $this->app->singleton(
+            AuthorRepositoryInterface::class,
+            AuthorRepository::class
+        );
+
         $votes = [
             config('rate.five'),
             config('rate.four'),

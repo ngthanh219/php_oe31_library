@@ -52,7 +52,6 @@ abstract class ModelTestCase extends TestCase
         $this->assertEquals($hidden, $model->getHidden());
         $this->assertEquals($visible, $model->getVisible());
         $this->assertEquals($casts, $model->getCasts());
-        $this->assertEquals($dates, $model->getDates());
         $this->assertEquals($primaryKey, $model->getKeyName());
 
         $c = $model->newCollection();
