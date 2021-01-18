@@ -56,8 +56,8 @@
                                     <p>{{ trans('client.return_data') }}</p>
                                     <input type="date" id="inputDiscount" name="return_date"
                                         value="{{ old('return_date') }}">
-                                    @if ($errors->has('borrowed_date'))
-                                        <span class="red">{{ $errors->first('borrowed_date') }}</span>
+                                    @if ($errors->has('return_date'))
+                                        <span class="red">{{ $errors->first('return_date') }}</span>
                                     @endif
                                     <br class="clearfix">
                                     <textarea name="note" class="textarea">{{ old('note') }}</textarea>
