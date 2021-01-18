@@ -23,4 +23,8 @@ return [
     'category_delete_success' => 'Category successfully deleted',
     'category_delete_fail' => 'Failed to delete category',
     'category_has_children' => 'Category has children! You should delete children before',
+    'book_restore_success' => 'Book restore success',
+    'book_restore_fail' => 'Book restore fail',
+    'book_hard_delete_success' => 'Hard delete success',
+    'book_hard_delete_fail' => 'Hard delete fail',
 ];

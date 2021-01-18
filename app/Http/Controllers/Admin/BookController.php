@@ -187,4 +187,37 @@ class BookController extends Controller
 
         return view('admin.book.category_popup', compact('categoryParents'));
     }
+
+    public function listDeleteBook()
+    {
+        $books = Book::onlyTrashed()->paginate(config('pagination.limit_page'));
+        
+        return view('admin.book.delete', compact('books'));
+    }
+
+    public function restoreBook($id)
+    {
+        $result = Book::withTrashed()->findOrFail($id)->restore();
+
+        if ($result) {
+            return redirect()->route('admin.book-delete')->with('infoMessage',
+                trans('message.book_restore_success'));
+        }
+
+        return redirect()->route('admin.publisher.index')->with('infoMessage',
+            trans('message.book_restore_fail'));
+    }
+
+    public function hardDelete($id)
+    {
+        $result = Book::withTrashed()->findOrFail($id)->forceDelete();
+
+        if ($result) {
+            return redirect()->route('admin.book-delete')->with('infoMessage',
+                trans('message.book_hard_delete_success'));
+        }
+
+        return redirect()->route('admin.publisher.index')->with('infoMessage',
+            trans('message.book_hard_delete_fail'));
+    }
 }

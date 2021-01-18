@@ -43,6 +43,9 @@ Route::group(['middleware' => 'language'], function () {
                 Route::get('undo/{request}', 'RequestController@undo')->name('undo');
                 Route::get('borrowed-book/{request}', 'RequestController@borrowedBook')->name('borrowed-book');
                 Route::get('return-book/{request}', 'RequestController@returnBook')->name('return-book');
+                Route::get('book-delete', 'BookController@listDeleteBook')->name('book-delete');
+                Route::delete('hard-delete/{book}', 'BookController@hardDelete')->name('hard-delete');
+                Route::get('book-restore/{book}', 'BookController@restoreBook')->name('book-restore');
             });
         });
         Route::resource('comments', 'CommentController');

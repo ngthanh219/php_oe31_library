@@ -23,4 +23,8 @@ return [
     'category_delete_success' => 'Xóa danh mục thành công',
     'category_delete_fail' => 'Xóa danh mục thất bại',
     'category_has_children' => 'Danh mục này đang có danh mục con! Bạn nên xóa danh mục con trước đó',
+    'book_restore_success' => 'Khôi phục sách thành công',
+    'book_restore_fail' => 'Khôi phục sách thất bại',
+    'book_hard_delete_success' => 'Xóa sách thành công',
+    'book_hard_delete_fail' => 'Xóa sách thất bại',
 ];
