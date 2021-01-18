@@ -30,5 +30,8 @@ return [
     'create_book_success' => 'Thêm sách thành công',
     'update_book_success' => 'Thêm mới sách thành công',
     'delete_book_success' => 'Xóa sách thành công',
-    'edit_information' => 'Sửa thông tin'
+    'edit_information' => 'Sửa thông tin',
+    'books_manager_deleted' => 'Quản lý sách đã bị xóa',
+    'day' => 'Ngày xóa',
+    'hour' => 'Giờ xóa',
 ];

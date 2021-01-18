@@ -32,5 +32,8 @@ return [
     'create_book_success' => 'Create new book successfully',
     'update_book_success' => 'Update book successfully',
     'delete_book_success' => 'Delete book successfully',
-    'edit_information' => 'Edit information'
+    'edit_information' => 'Edit information',
+    'books_manager_deleted' => 'Book Deleted Manager',
+    'day' => 'Day deleted',
+    'hour' => 'Hour Deleted',
 ];
