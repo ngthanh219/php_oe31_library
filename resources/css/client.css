@@ -226,6 +226,45 @@ i.vote-current {
     margin: 10px;
 }
 
+.span8.filter {
+    position: relative;
+}
+
+.box-filter {
+    position: absolute;
+    right: 0px;
+    width: 219px;
+    top: 90px;
+    background: #f9f7f7;
+    z-index: 9999;
+}
+
+.box-filter .box-data {
+    height: 37px;
+    border-top: 1px solid #ccc;
+}
+
+.box-filter .box-data .item-box-filter {
+    cursor: pointer;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+}
+
+.box-filter .box-data .item-box-filter:hover {
+    color: white;
+    font-weight: bold;
+    background-color: black;
+}
+
+.box-filter .box-data .item-box-filter .content-data {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
 @media only screen and (max-width: 1450px) {
     .box-wapper {
         right: 0px !important;

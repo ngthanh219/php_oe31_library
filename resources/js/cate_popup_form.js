@@ -34,7 +34,16 @@ $('#form').submit(function (e) {
             removeClass();
         },
         error: function (error) {
+            $('#errorParent').text(error.responseJSON.errors.parent_name);
+            $('#errorChild').text(error.responseJSON.errors.child_name);
 
+            if (!error.responseJSON.errors.parent_name) {
+                $('#errorParent').text('');
+            }
+
+            if (!error.responseJSON.errors.child_name) {
+                $('#errorChild').text('');
+            }
         },
         complete: function (res) {
 

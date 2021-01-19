@@ -4,9 +4,11 @@ namespace App\Http\Controllers\Admin;
 
 use App\Exports\PublishersExport;
 use App\Http\Controllers\Controller;
-use App\Models\Publisher;
-use Illuminate\Http\Request;
 use App\Http\Requests\PublisherRequest;
+use App\Models\Publisher;
+use Auth;
+use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Maatwebsite\Excel\Facades\Excel;
 
 class PublisherController extends Controller
@@ -18,9 +20,13 @@ class PublisherController extends Controller
      */
     public function index()
     {
-        $publishers = Publisher::orderBy('id', 'DESC')->paginate(config('pagination.limit_page'));
+        if (Auth::user()->can('publisher.index')) {
+            $publishers = Publisher::orderBy('id', 'DESC')->paginate(config('pagination.limit_page'));
 
-        return view('admin.publisher.index', compact('publishers'));
+            return view('admin.publisher.index', compact('publishers'));
+        }
+
+        abort(Response::HTTP_FORBIDDEN);
     }
 
     /**
@@ -30,7 +36,11 @@ class PublisherController extends Controller
      */
     public function create()
     {
-        return view('admin.publisher.create');
+        if (Auth::user()->can('publisher.create')) {
+            return view('admin.publisher.create');
+        }
+
+        abort(Response::HTTP_FORBIDDEN);
     }
 
     /**
@@ -41,28 +51,32 @@ class PublisherController extends Controller
      */
     public function store(PublisherRequest $request)
     {
-        $publisher = new Publisher;
-        $image = '';
-        if ($request->hasFile('image')) {
-            $file = $request->image;
-            $file->move('upload/publisher', $file->getClientOriginalName());
-            $image = $file->getClientOriginalName();
-        }
-        $result = $publisher->create([
-            'image' => $image,
-            'name' => $request->name,
-            'email' => $request->email,
-            'address' => $request->address,
-            'phone' => $request->phone,
-            'description' => $request->description,
-        ]);
-        if ($result) {
+        if (Auth::user()->can('publisher.store')) {
+            $publisher = new Publisher;
+            $image = '';
+            if ($request->hasFile('image')) {
+                $file = $request->image;
+                $file->move('upload/publisher', $file->getClientOriginalName());
+                $image = $file->getClientOriginalName();
+            }
+            $result = $publisher->create([
+                'image' => $image,
+                'name' => $request->name,
+                'email' => $request->email,
+                'address' => $request->address,
+                'phone' => $request->phone,
+                'description' => $request->description,
+            ]);
+            if ($result) {
+                return redirect()->route('admin.publishers.index')->with('infoMessage',
+                    trans('message.publisher_create_success'));
+            }
+
             return redirect()->route('admin.publishers.index')->with('infoMessage',
-                trans('message.publisher_create_success'));
+                trans('message.publisher_create_fail'));
         }
 
-        return redirect()->route('admin.publishers.index')->with('infoMessage',
-            trans('message.publisher_create_fail'));
+        abort(Response::HTTP_FORBIDDEN);
     }
 
     /**
@@ -73,9 +87,13 @@ class PublisherController extends Controller
      */
     public function edit($id)
     {
-        $publisher = Publisher::findOrFail($id);
+        if (Auth::user()->can('publisher.edit')) {
+            $publisher = Publisher::findOrFail($id);
 
-        return view('admin.publisher.edit', compact('publisher'));
+            return view('admin.publisher.edit', compact('publisher'));
+        }
+
+        abort(Response::HTTP_FORBIDDEN);
     }
 
     /**
@@ -87,28 +105,32 @@ class PublisherController extends Controller
      */
     public function update(PublisherRequest $request, $id)
     {
-        $publisher = Publisher::findOrFail($id);
-        $image = $publisher->image;
-        if ($request->hasFile('image')) {
-            $file = $request->image;
-            $file->move('upload/publisher', $file->getClientOriginalName());
-            $image = $file->getClientOriginalName();
-        }
-        $result = $publisher->update([
-            'name' => $request->name,
-            'image' => $image,
-            'email' => $request->email,
-            'phone' => $request->phone,
-            'address' => $request->address,
-            'description' => $request->description,
-        ]);
-        if ($result) {
+        if (Auth::user()->can('publisher.update')) {
+            $publisher = Publisher::findOrFail($id);
+            $image = $publisher->image;
+            if ($request->hasFile('image')) {
+                $file = $request->image;
+                $file->move('upload/publisher', $file->getClientOriginalName());
+                $image = $file->getClientOriginalName();
+            }
+            $result = $publisher->update([
+                'name' => $request->name,
+                'image' => $image,
+                'email' => $request->email,
+                'phone' => $request->phone,
+                'address' => $request->address,
+                'description' => $request->description,
+            ]);
+            if ($result) {
+                return redirect()->route('admin.publishers.index')->with('infoMessage',
+                    trans('message.publisher_update_success'));
+            }
+
             return redirect()->route('admin.publishers.index')->with('infoMessage',
-                trans('message.publisher_update_success'));
+                trans('message.publisher_update_fail'));
         }
 
-        return redirect()->route('admin.publishers.index')->with('infoMessage',
-            trans('message.publisher_update_fail'));
+        abort(Response::HTTP_FORBIDDEN);
     }
 
     /**
@@ -119,29 +141,37 @@ class PublisherController extends Controller
      */
     public function destroy($id)
     {
-        $publisher = Publisher::findOrFail($id)->load('books');
-        if (!$publisher->books->isEmpty()) {
+        if (Auth::user()->can('publisher.destroy')) {
+            $publisher = Publisher::findOrFail($id)->load('books');
+            if (!$publisher->books->isEmpty()) {
+                return redirect()->route('admin.publishers.index')->with('infoMessage',
+                    trans('message.publisher_has_books'));
+            }
+            $result = $publisher->delete();
+            if ($result) {
+                return redirect()->route('admin.publishers.index')->with('infoMessage',
+                    trans('message.publisher_delete_success'));
+            }
+
             return redirect()->route('admin.publishers.index')->with('infoMessage',
-                trans('message.publisher_has_books'));
-        }
-        $result = $publisher->delete();
-        if ($result) {
-            return redirect()->route('admin.publishers.index')->with('infoMessage',
-                trans('message.publisher_delete_success'));
+                trans('message.publisher_delete_fail'));
         }
 
-        return redirect()->route('admin.publishers.index')->with('infoMessage',
-            trans('message.publisher_delete_fail'));
+        abort(Response::HTTP_FORBIDDEN);
     }
 
     public function export()
     {
-        $item = new PublishersExport;
-        if ($item->view()) {
-            return Excel::download(new PublishersExport, 'publishers.xlsx');
+        if (Auth::user()->can('publisher.export')) {
+            $item = new PublishersExport;
+            if ($item->view()) {
+                return Excel::download(new PublishersExport, 'publishers.xlsx');
+            }
+
+            return redirect()->back()->with('infoMessage',
+                trans('message.publisher_no_data'));
         }
 
-        return redirect()->back()->with('infoMessage',
-            trans('message.publisher_no_data'));
+        abort(Response::HTTP_FORBIDDEN);
     }
 }

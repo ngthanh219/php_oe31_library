@@ -4,8 +4,10 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CategoryRequest;
+use App\Http\Requests\PopupCategoryRequest;
 use App\Models\Category;
 use Illuminate\Http\Request;
+use Auth;
 use Illuminate\Http\Response;
 
 class CategoryController extends Controller
@@ -17,9 +19,13 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        $categories = Category::where('parent_id', config('category.parent_id'))->orderBy('id', 'DESC')->get();
+        if (Auth::user()->can('category.index')) {
+            $categories = Category::where('parent_id', config('category.parent_id'))->orderBy('id', 'DESC')->paginate(config('pagination.limit_page'));
 
-        return view('admin.category.index', compact('categories'));
+            return view('admin.category.index', compact('categories'));
+        }
+
+        abort(Response::HTTP_FORBIDDEN);
     }
 
     /**
@@ -29,9 +35,13 @@ class CategoryController extends Controller
      */
     public function create()
     {
-        $categoryParents = Category::where('parent_id', config('category.parent_id'))->get();
+        if (Auth::user()->can('category.create')) {
+            $categoryParents = Category::where('parent_id', config('category.parent_id'))->get();
 
-        return view('admin.category.create', compact('categoryParents'));
+            return view('admin.category.create', compact('categoryParents'));
+        }
+
+        abort(Response::HTTP_FORBIDDEN);
     }
 
     /**
@@ -42,36 +52,44 @@ class CategoryController extends Controller
      */
     public function store(CategoryRequest $request)
     {
-        $category = new Category;
-        $parentId = (isset($request->parent_id)) ? $request->parent_id : config('category.parent_id');
-        $result = $category->create([
-            'name' => $request->name,
-            'parent_id' => $parentId,
-        ]);
-        if ($result) {
+        if (Auth::user()->can('category.store')) {
+            $category = new Category;
+            $parentId = (isset($request->parent_id)) ? $request->parent_id : config('category.parent_id');
+            $result = $category->create([
+                'name' => $request->name,
+                'parent_id' => $parentId,
+            ]);
+            if ($result) {
+                return redirect()->route('admin.categories.index')->with('infoMessage',
+                    trans('message.category_create_success'));
+            }
+
             return redirect()->route('admin.categories.index')->with('infoMessage',
-                trans('message.category_create_success'));
+                trans('message.category_create_fail'));
         }
 
-        return redirect()->route('admin.categories.index')->with('infoMessage',
-            trans('message.category_create_fail'));
+        abort(Response::HTTP_FORBIDDEN);
     }
 
-    public function apiStore(Request $request)
+    public function apiStore(PopupCategoryRequest $request)
     {
-        $category = new Category;
-        $parent = $category->create([
-            'name' => $request->parent_name,
-            'parent_id' => config('category.parent_id'),
-        ]);
-        $child = $category->create([
-            'name' => $request->child_name,
-            'parent_id' => $parent['id'],
-        ]);
+        if (Auth::user()->can('category.apiStore')) {
+            $category = new Category;
+            $parent = $category->create([
+                'name' => $request->parent_name,
+                'parent_id' => config('category.parent_id'),
+            ]);
+            $child = $category->create([
+                'name' => $request->child_name,
+                'parent_id' => $parent['id'],
+            ]);
 
-        return response()->json([
-            'dataChild' => $child,
-        ]);
+            return response()->json([
+                'dataChild' => $child,
+            ]);
+        }
+
+        abort(Response::HTTP_FORBIDDEN);
     }
 
     /**
@@ -82,14 +100,16 @@ class CategoryController extends Controller
      */
     public function show($id)
     {
-        $category = Category::findOrFail($id);
-        if ($category->parent_id === config('category.parent_id')) {
-            $category->load('children');
+        if (Auth::user()->can('category.show')) {
+            $category = Category::findOrFail($id);
+            if ($category->parent_id === config('category.parent_id')) {
+                $category->load('children');
 
-            return view('admin.category.show', compact('category'));
+                return view('admin.category.show', compact('category'));
+            }
         }
 
-        abort(Response::HTTP_NOT_FOUND);
+        abort(Response::HTTP_FORBIDDEN);
     }
 
     /**
@@ -100,10 +120,14 @@ class CategoryController extends Controller
      */
     public function edit($id)
     {
-        $category = Category::findOrFail($id);
-        $categories = Category::where('parent_id', config('category.parent_id'))->with('children')->get();
+        if (Auth::user()->can('category.edit')) {
+            $category = Category::findOrFail($id);
+            $categories = Category::where('parent_id', config('category.parent_id'))->with('children')->get();
 
-        return view('admin.category.edit', compact('category', 'categories'));
+            return view('admin.category.edit', compact('category', 'categories'));
+        }
+
+        abort(Response::HTTP_FORBIDDEN);
     }
 
     /**
@@ -115,25 +139,29 @@ class CategoryController extends Controller
      */
     public function update(CategoryRequest $request, $id)
     {
-        $category = Category::findOrFail($id);
-        $parentId = (isset($request->parent_id)) ? $request->parent_id : config('category.parent_id');
-        $result = $category->update([
-            'name' => $request->name,
-            'parent_id' => $parentId,
-        ]);
-        $parent = $category->load('parent');
-        if ($result) {
-            if (isset($parent->parent)) {
-                return redirect()->route('admin.categories.show', $parent['parent']->id)->with('infoMessage',
+        if (Auth::user()->can('category.update')) {
+            $category = Category::findOrFail($id);
+            $parentId = (isset($request->parent_id)) ? $request->parent_id : config('category.parent_id');
+            $result = $category->update([
+                'name' => $request->name,
+                'parent_id' => $parentId,
+            ]);
+            $parent = $category->load('parent');
+            if ($result) {
+                if (isset($parent->parent)) {
+                    return redirect()->route('admin.categories.show', $parent['parent']->id)->with('infoMessage',
+                        trans('message.category_update_success'));
+                }
+
+                return redirect()->route('admin.categories.index')->with('infoMessage',
                     trans('message.category_update_success'));
             }
 
-            return redirect()->route('admin.categories.index')->with('infoMessage',
-                trans('message.category_update_success'));
+            return redirect()->back()->with('infoMessage',
+                trans('message.category_update__fail'));
         }
 
-        return redirect()->back()->with('infoMessage',
-            trans('message.category_update__fail'));
+        abort(Response::HTTP_FORBIDDEN);
     }
 
     /**
@@ -144,21 +172,25 @@ class CategoryController extends Controller
      */
     public function destroy($id)
     {
-        $category = Category::findOrFail($id);
-        if ($category->parent_id === config('category.parent_id')) {
-            $children = $category->load('children');
-            if (!$children->children->isEmpty()) {
-                return redirect()->back()->with('infoMessage',
-                    trans('message.category_has_children'));
+        if (Auth::user()->can('category.destroy')) {
+            $category = Category::findOrFail($id);
+            if ($category->parent_id === config('category.parent_id')) {
+                $children = $category->load('children');
+                if (!$children->children->isEmpty()) {
+                    return redirect()->back()->with('infoMessage',
+                        trans('message.category_has_children'));
+                }
             }
-        }
-        $result = $category->delete();
-        if ($result) {
-            return redirect()->back()->with('infoMessage',
-                trans('message.category_delete_success'));
+            $result = $category->delete();
+            if ($result) {
+                return redirect()->back()->with('infoMessage',
+                    trans('message.category_delete_success'));
+            }
+
+            return redirect()->route('admin.categories.index')->with('infoMessage',
+                trans('message.category_delete__fail'));
         }
 
-        return redirect()->route('admin.categories.index')->with('infoMessage',
-            trans('message.category_delete__fail'));
+        abort(Response::HTTP_FORBIDDEN);
     }
 }
