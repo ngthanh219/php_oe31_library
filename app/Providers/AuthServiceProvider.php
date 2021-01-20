@@ -36,7 +36,7 @@ class AuthServiceProvider extends ServiceProvider
                 return true;
             }
         });
-        
+
         if (!$this->app->runningInConsole()) {
             $permissions = Permission::all();
             foreach ($permissions as $pms) {
