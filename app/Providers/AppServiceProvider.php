@@ -9,6 +9,8 @@ use App\Repositories\Author\AuthorRepository;
 use App\Repositories\Author\AuthorRepositoryInterface;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\ServiceProvider;
+use App\Repositories\Publisher\PublisherRepositoryInterface;
+use App\Repositories\Publisher\PublisherRepository;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -19,7 +21,10 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
+        $this->app->singleton(
+            PublisherRepositoryInterface::class,
+            PublisherRepository::class
+        );
     }
 
     /**
