@@ -8,6 +8,20 @@ use Tests\ModelTestCase;
 
 class PublisherTest extends ModelTestCase
 {
+    protected $publisher;
+
+    public function setUp(): void
+    {
+        parent::setUp();
+        $this->publisher = new Publisher();
+    }
+
+    public function tearDown(): void
+    {
+        parent::tearDown();
+        unset($this->publisher);
+    }
+
     /**
      * A basic unit test example.
      *
@@ -27,9 +41,9 @@ class PublisherTest extends ModelTestCase
 
     public function test_books_relation()
     {
-        $m = new Publisher();
-        $r = $m->books();
+        $modelPublisher = new Publisher();
+        $relation = $modelPublisher->books();
 
-        $this->assertHasManyRelation($r, $m, new Book());
+        $this->assertHasManyRelation($relation, $modelPublisher, new Book());
     }
 }

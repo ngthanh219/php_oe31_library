@@ -8,6 +8,20 @@ use Tests\ModelTestCase;
 
 class AuthorTest extends ModelTestCase
 {
+    protected $author;
+
+    public function setUp(): void
+    {
+        parent::setUp();
+        $this->author = new Author();
+    }
+
+    public function tearDown(): void
+    {
+        parent::tearDown();
+        unset($this->author);
+    }
+
     public function test_model_configuration()
     {
         $this->runConfigurationAssertions(new Author(), [
@@ -21,9 +35,9 @@ class AuthorTest extends ModelTestCase
 
     public function test_books_relation()
     {
-        $m = new Author();
-        $r = $m->books();
+        $modelAuthor = new Author();
+        $relation = $modelAuthor->books();
 
-        $this->assertHasManyRelation($r, $m, new Book());
+        $this->assertHasManyRelation($relation, $modelAuthor, new Book());
     }
 }

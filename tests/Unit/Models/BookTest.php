@@ -12,6 +12,20 @@ use Tests\ModelTestCase;
 
 class BookTest extends ModelTestCase
 {
+    protected $book;
+
+    public function setUp(): void
+    {
+        parent::setUp();
+        $this->book = new Book();
+    }
+
+    public function tearDown(): void
+    {
+        parent::tearDown();
+        unset($this->book);
+    }
+
     public function test_model_configuration()
     {
         $this->runConfigurationAssertions(new Book(), [
@@ -28,57 +42,57 @@ class BookTest extends ModelTestCase
 
     public function test_author_relation()
     {
-        $m = new Book();
-        $r = $m->author();
+        $modelBook = new Book();
+        $relation = $modelBook->author();
 
-        $this->assertBelongsToRelation($r, $m, new Author(), 'author_id');
+        $this->assertBelongsToRelation($relation, $modelBook, new Author(), 'author_id');
     }
 
     public function test_publisher_relation()
     {
-        $m = new Book();
-        $r = $m->publisher();
+        $modelBook = new Book();
+        $relation = $modelBook->publisher();
 
-        $this->assertBelongsToRelation($r, $m, new Publisher(), 'publisher_id');
+        $this->assertBelongsToRelation($relation, $modelBook, new Publisher(), 'publisher_id');
     }
 
     public function test_categories_relation()
     {
-        $m = new Book();
-        $r = $m->categories();
+        $modelBook = new Book();
+        $relation = $modelBook->categories();
 
-        $this->assertBelongsToManyRelation($r, null, 'category_id');
+        $this->assertBelongsToManyRelation($relation, null, 'category_id');
     }
 
     public function test_requests_relation()
     {
-        $m = new Book();
-        $r = $m->requests();
+        $modelBook = new Book();
+        $relation = $modelBook->requests();
 
-        $this->assertBelongsToManyRelation($r, null, 'request_id');
+        $this->assertBelongsToManyRelation($relation, null, 'request_id');
     }
 
     public function test_comments_relation()
     {
-        $m = new Book();
-        $r = $m->comments();
+        $modelBook = new Book();
+        $relation = $modelBook->comments();
 
-        $this->assertHasManyRelation($r, $m, new Comment());
+        $this->assertHasManyRelation($relation, $modelBook, new Comment());
     }
 
     public function test_likes_relation()
     {
-        $m = new Book();
-        $r = $m->likes();
+        $modelBook = new Book();
+        $relation = $modelBook->likes();
 
-        $this->assertHasManyRelation($r, $m, new Like());
+        $this->assertHasManyRelation($relation, $modelBook, new Like());
     }
 
     public function test_rates_relation()
     {
-        $m = new Book();
-        $r = $m->rates();
+        $modelBook = new Book();
+        $relation = $modelBook->rates();
 
-        $this->assertHasManyRelation($r, $m, new Rate());
+        $this->assertHasManyRelation($relation, $modelBook, new Rate());
     }
 }

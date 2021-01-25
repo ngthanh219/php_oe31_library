@@ -9,6 +9,20 @@ use Tests\ModelTestCase;
 
 class LikeTest extends ModelTestCase
 {
+    protected $like;
+
+    public function setUp(): void
+    {
+        parent::setUp();
+        $this->like = new Like();
+    }
+
+    public function tearDown(): void
+    {
+        parent::tearDown();
+        unset($this->like);
+    }
+
     public function test_model_configuration()
     {
         $this->runConfigurationAssertions(new Like(), [
@@ -20,17 +34,17 @@ class LikeTest extends ModelTestCase
 
     public function test_user_relation()
     {
-        $m = new Like();
-        $r = $m->user();
+        $modelLike = new Like();
+        $relation = $modelLike->user();
 
-        $this->assertBelongsToRelation($r, $m, new User(), 'user_id');
+        $this->assertBelongsToRelation($relation, $modelLike, new User(), 'user_id');
     }
 
     public function test_book_relation()
     {
-        $m = new Like();
-        $r = $m->book();
+        $modelLike = new Like();
+        $relation = $modelLike->book();
 
-        $this->assertBelongsToRelation($r, $m, new User(), 'book_id');
+        $this->assertBelongsToRelation($relation, $modelLike, new User(), 'book_id');
     }
 }
