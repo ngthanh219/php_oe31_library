@@ -19,5 +19,6 @@ return [
     'actions' => 'Hành động',
     'unknow' => 'Không có thông tin',
     'notifi' => 'Thông báo',
-    'author_edit' => 'Sửa thông tin tác gỉa'
+    'author_edit' => 'Sửa thông tin tác gỉa',
+    'avatar' => 'Ảnh đại diện',
 ];
