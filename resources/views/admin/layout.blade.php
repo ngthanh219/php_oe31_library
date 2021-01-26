@@ -78,6 +78,7 @@
                                         <form action="{{ route('logout') }}" method="POST">
                                             @csrf
                                             <button type="submit"
+                                                dusk="logout"
                                                 class="btn btn-default btn-flat">{{ trans('user.log_out') }}</button>
                                         </form>
                                     </div>
@@ -151,7 +152,7 @@
                     <li>
                         <a href="{{ route('admin.book-delete') }}">
                             <i class="fa fa-ban" aria-hidden="true"></i>
-                            <span>{{ trans('book.book') }}</span>
+                            <span>{{ trans('book.books_manager_deleted') }}</span>
                         </a>
                     </li>
                 </ul>
