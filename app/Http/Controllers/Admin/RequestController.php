@@ -7,6 +7,7 @@ use App\Repositories\Book\BookRepositoryInterface;
 use App\Repositories\Request\RequestRepositoryInterface;
 use Carbon\Carbon;
 use Illuminate\Http\Response;
+use Auth;
 
 class RequestController extends Controller
 {

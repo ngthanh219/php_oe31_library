@@ -49,6 +49,18 @@
                 </a>
                 <div class="navbar-custom-menu">
                     <ul class="nav navbar-nav">
+                        <li class="dropdown notifications-menu">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                <i class="fa fa-bell-o"></i>
+                                <span class="label label-warning number-noti" id="number-noti"></span>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li class="header number-noti-message"></li>
+                                <li>
+                                    <ul class="menu noti-data"></ul>
+                                </li>
+                            </ul>
+                        </li>
                         <li class="dropdown user user-menu" id="user-menu">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                                 <img src="{{ asset('bower_components/admin-lte/dist/img/iconUser.png') }}"
@@ -77,8 +89,7 @@
                                     <div class="pull-right">
                                         <form action="{{ route('logout') }}" method="POST">
                                             @csrf
-                                            <button type="submit"
-                                                dusk="logout"
+                                            <button type="submit" dusk="logout"
                                                 class="btn btn-default btn-flat">{{ trans('user.log_out') }}</button>
                                         </form>
                                     </div>
@@ -170,7 +181,10 @@
         </footer>
         <div class="control-sidebar-bg"></div>
     </div>
+
     @yield('script')
+    <script src="{{ asset('js/app.js') }}"></script>
+    <script src="{{ asset('js/realtime.js') }}" defer></script>
     <script type="text/javascript" src="{{ asset('/js/user_menu.js') }}"></script>
     <script type="text/javascript" src="{{ asset('/js/sweet-alert.js') }}"></script>
     <script src="{{ asset('bower_components/admin-lte/dist/js/component/general.js') }}">

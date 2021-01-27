@@ -36,7 +36,6 @@ interface UserRepositoryInterface extends RepositoryInterface
      */
     public function getRequest();
 
-
     /**
      * Lấy ra id của các quyển sách đã mượn
      *
@@ -44,4 +43,12 @@ interface UserRepositoryInterface extends RepositoryInterface
      * @return void
      */
     public function checkRequest($id = []);
+
+    /**
+     * Lấy ra các user có quyền admin và superadmin
+     *
+     * @param array $roles là quyền
+     * @return void
+     */
+    public function getUserHaveRoleAdmins($roles);
 }
