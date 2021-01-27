@@ -59,4 +59,9 @@ abstract class BaseRepository implements RepositoryInterface
 
         return false;
     }
+
+    public function load($collection, $relation)
+    {   
+        return $collection->load($relation);
+    }
 }
