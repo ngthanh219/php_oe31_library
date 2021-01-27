@@ -27,4 +27,11 @@ interface RequestRepositoryInterface extends RepositoryInterface
      * @return void
      */
     public function getTotalBook($relation);
+
+    /**
+     * Biểu đồ hiển thị số lượng sách đang mượn theo từng tháng
+     *
+     * @return Collection
+     */
+    public function chart();
 }

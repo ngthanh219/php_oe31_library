@@ -52,35 +52,37 @@ function callApiNotification() {
 callApiNotification();
 
 function getNotification(number) {
-    Echo.channel('channel-notification')
-        .listen('NotificationEvent', (e) => {
-            number++;
-            $.ajax({
-                url: url + '/admin/notification-for-admin',
-                type: 'GET',
-                dataType: 'json',
-                success: function (res) {
-                    var userId = res.user_id;
-                    var usersId = e.message.users;
-                    var checkPusher = false;
+    setTimeout(function () {
+        Echo.channel('channel-notification')
+            .listen('NotificationEvent', (e) => {
+                number++;
+                $.ajax({
+                    url: url + '/admin/notification-for-admin',
+                    type: 'GET',
+                    dataType: 'json',
+                    success: function (res) {
+                        var userId = res.user_id;
+                        var usersId = e.message.users;
+                        var checkPusher = false;
 
-                    usersId.map(function (index) {
-                        if (userId == index) {
-                            checkPusher = true;
+                        usersId.map(function (index) {
+                            if (userId == index) {
+                                checkPusher = true;
+                            }
+                        })
+
+                        if (checkPusher) {
+                            $('.noti-data').empty();
+                            callApiNotification();
                         }
-                    })
+                    },
+                    error: function (XHR, status, error) {
 
-                    if (checkPusher) {
-                        $('.noti-data').empty();
-                        callApiNotification();
+                    },
+                    complete: function (res) {
+
                     }
-                },
-                error: function (XHR, status, error) {
-
-                },
-                complete: function (res) {
-
-                }
-            })
-        });
+                })
+            });
+    }, 5000);
 }
