@@ -25,6 +25,8 @@ use App\Repositories\Role\RoleRepository;
 use App\Repositories\Role\RoleRepositoryInterface;
 use App\Repositories\Permission\PermissionRepository;
 use App\Repositories\Permission\PermissionRepositoryInterface;
+use App\Repositories\Comment\CommentRepository;
+use App\Repositories\Comment\CommentRepositoryInterface;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\ServiceProvider;
 
@@ -85,6 +87,11 @@ class AppServiceProvider extends ServiceProvider
         $this->app->singleton(
             PermissionRepositoryInterface::class,
             PermissionRepository::class
+        );
+
+        $this->app->singleton(
+            CommentRepositoryInterface::class,
+            CommentRepository::class
         );
     }
 
