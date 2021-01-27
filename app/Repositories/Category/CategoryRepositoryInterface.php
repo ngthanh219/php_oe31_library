@@ -19,4 +19,11 @@ interface CategoryRepositoryInterface extends RepositoryInterface
      * @return void
      */
     public function getParentAll();
+
+    /**
+     * lấy ra toàn bộ category children với lấy ra quan hệ của 'books'
+     *
+     * @return void
+     */
+    public function getChildren();
 }

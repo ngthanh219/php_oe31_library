@@ -13,6 +13,8 @@ use App\Repositories\Publisher\PublisherRepository;
 use App\Repositories\Publisher\PublisherRepositoryInterface;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\ServiceProvider;
+use App\Repositories\Book\BookRepositoryInterface;
+use App\Repositories\Book\BookRepository;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -36,6 +38,11 @@ class AppServiceProvider extends ServiceProvider
         $this->app->singleton(
             CategoryRepositoryInterface::class,
             CategoryRepository::class
+        );
+
+        $this->app->singleton(
+            BookRepositoryInterface::class,
+            BookRepository::class
         );
     }
 

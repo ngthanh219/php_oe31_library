@@ -60,8 +60,58 @@ abstract class BaseRepository implements RepositoryInterface
         return false;
     }
 
-    public function load($collection, $relation)
-    {   
+    public function getAllItem()
+    {
+        return $this->model->get();
+    }
+
+    public function load($collection, $relation = [])
+    {
         return $collection->load($relation);
+    }
+
+    public function with($relation = [])
+    {
+        return $this->model->with($relation)->get();
+    }
+
+    public function attach($collection, $relation, $param = [])
+    {
+        return $collection->$relation()->attach($param);
+    }
+
+    public function sync($collection, $relation, $items = [])
+    {
+        return $collection->$relation()->sync($items);
+    }
+
+    public function withFind($id, $relation = [])
+    {
+        return $this->model->with($relation)->find($id);
+    }
+
+    public function search($key)
+    {
+        return $this->model->where('name', 'LIKE', '%' . $request->key . '%', )->orderBy('id', 'DESC')->get();
+    }
+
+    public function getSoftDelete()
+    {
+        return $this->model->onlyTrashed()->paginate(config('pagination.limit_page'));
+    }
+
+    public function findSoftDelete($id)
+    {
+        return $this->model->withTrashed()->findOrFail($id);
+    }
+
+    public function restoreSoftDelete($id)
+    {
+        return $this->model->withTrashed()->findOrFail($id)->restore();
+    }
+
+    public function hardDelete($id)
+    {
+        return $this->model->withTrashed()->findOrFail($id)->forceDelete();
     }
 }

@@ -19,8 +19,13 @@ class CategoryRepository extends BaseRepository implements CategoryRepositoryInt
             ->paginate(config('pagination.limit_page'));
     }
 
-    public function getParentAll() 
+    public function getParentAll()
     {
-        return  $this->model->where('parent_id', config('category.parent_id'))->get();
+        return $this->model->where('parent_id', config('category.parent_id'))->get();
+    }
+
+    public function getChildren()
+    {
+        return $this->model->with('books')->where('parent_id', '<>', config('category.parent_id'))->get();
     }
 }

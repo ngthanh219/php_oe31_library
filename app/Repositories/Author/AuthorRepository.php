@@ -16,7 +16,7 @@ class AuthorRepository extends BaseRepository implements AuthorRepositoryInterfa
     {
         if ($id) {
             $authors = Author::with('books')->find($id);
-    
+
             return $authors;
         }
 
