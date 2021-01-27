@@ -84,7 +84,7 @@ class indexTest extends DuskTestCase
             $browser->loginAs($user)
                 ->visit('/admin/authors')
                 ->click('.fa-pencil')
-                ->assertPathIs('/admin/authors/'.$author->id.'/edit');
+                ->assertPathIs('/admin/authors/' . $author->id . '/edit');
         });
     }
 
