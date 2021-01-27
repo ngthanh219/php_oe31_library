@@ -16,4 +16,5 @@ return [
     'list_request' => 'Danh sách yêu cầu',
     'login' => 'Đăng nhập',
     'create_account' => 'Tạo tài khoản',
+    'hello' => 'Xin chào, '
 ];

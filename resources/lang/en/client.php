@@ -40,4 +40,5 @@ return [
     'list_request' => 'List request',
     'login' => 'Login',
     'create_account' => 'Create account',
+    'hello' => 'Hello, '
 ];

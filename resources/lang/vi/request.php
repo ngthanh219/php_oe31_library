@@ -38,4 +38,8 @@ return [
     'in_day' => 'Mượn trong ngày',
     'too_late' => 'Trả muộn',
     'take_book_late' => 'Quá hạn nhưng chưa lấy sách',
+    'days_remaining' => 'Những ngày còn lại',
+    'you_have' => 'Bạn còn',
+    'mess' => 'phải trả sách phải trả sách rồi đứng quên trả sách nha đúng ngày',
+    'thanks' => 'Cám ơn',
 ];
