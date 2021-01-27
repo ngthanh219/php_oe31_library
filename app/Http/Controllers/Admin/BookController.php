@@ -101,7 +101,7 @@ class BookController extends Controller
         }
 
         $book = $this->bookRepo->find($id);
-    
+
         if ($book) {
             $book = $this->bookRepo->load($book, ['author', 'publisher', 'categories']);
             return view('admin.book.detail', compact('book'));

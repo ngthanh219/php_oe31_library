@@ -81,7 +81,7 @@ interface RepositoryInterface
      * @return void
      */
     public function getSoftDelete();
-    
+
     /**
      * Tìm kiếm row bị xóa mềm
      *
@@ -105,4 +105,11 @@ interface RepositoryInterface
      * @return void
      */
     public function hardDelete($id);
+
+    /**
+     * get
+     * Lấy ra tất cả dữ liệu không có limit
+     * @return void
+     */
+    public function get();
 }

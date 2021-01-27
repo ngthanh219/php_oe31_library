@@ -13,11 +13,24 @@ class PublisherRepository extends BaseRepository implements PublisherRepositoryI
         return Publisher::class;
     }
 
+    /**
+     * loadBook
+     * Lấy ra các sách của một publisher
+     * @param int $id
+     * @return void
+     */
     public function loadBook($id)
     {
         return Publisher::find($id)->load('books');
     }
 
+    /**
+     * Export
+     * Export thông tin của publisher
+     * @param collection $model
+     * @param string $nameFile
+     * @return void
+     */
     public function export($model, $nameFile)
     {
         return Excel::download($model, $nameFile);
