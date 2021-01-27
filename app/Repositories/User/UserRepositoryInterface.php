@@ -28,4 +28,19 @@ interface UserRepositoryInterface extends RepositoryInterface
      * @return void
      */
     public function search($key);
+
+     /**
+     * Lấy danh sachs request của user
+     *
+     * @return void
+     */
+    public function getRequest();
+    
+    /**
+     * Lấy ra id của các quyển sách đã mượn
+     *
+     * @param array $id là danh sách id của "book"
+     * @return void
+     */
+    public function checkRequest($id = []);
 }
