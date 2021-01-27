@@ -7,14 +7,19 @@ use App\Models\Book;
 use App\Models\Category;
 use App\Repositories\Author\AuthorRepository;
 use App\Repositories\Author\AuthorRepositoryInterface;
+use App\Repositories\Book\BookRepository;
+use App\Repositories\Book\BookRepositoryInterface;
 use App\Repositories\Category\CategoryRepository;
 use App\Repositories\Category\CategoryRepositoryInterface;
+use App\Repositories\Like\LikeRepository;
+use App\Repositories\Like\LikeRepositoryInterface;
 use App\Repositories\Publisher\PublisherRepository;
 use App\Repositories\Publisher\PublisherRepositoryInterface;
+use App\Repositories\Rate\RateRepository;
+use App\Repositories\Rate\RateRepositoryInterface;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\ServiceProvider;
-use App\Repositories\Book\BookRepositoryInterface;
-use App\Repositories\Book\BookRepository;
+
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -43,6 +48,16 @@ class AppServiceProvider extends ServiceProvider
         $this->app->singleton(
             BookRepositoryInterface::class,
             BookRepository::class
+        );
+
+        $this->app->singleton(
+            LikeRepositoryInterface::class,
+            LikeRepository::class
+        );
+
+        $this->app->singleton(
+            RateRepositoryInterface::class,
+            RateRepository::class
         );
     }
 
