@@ -37,21 +37,23 @@ class ProcessCheckDate implements ShouldQueue
     {
         if ($this->request->status === config('request.pending') || $this->request->status == config('request.accept')) {
             $req = $requestRepo->withFind($this->request->id, ['books']);
-            foreach ($req->books as $book) {
-                $bookRepo->update($book->id, [
+            foreach ($req->books as $book) {    
+                $result = $bookRepo->update($book->id, [
                     'in_stock' => $book->in_stock + config('book.book'),
                 ]);
             }
-            $requestRepo->update($this->request->id, [
+            $result = $requestRepo->update($this->request->id, [
                 'status' => config('request.forget'),
             ]);
         } else {
-            $userRepo->update($this->request->user->id, [
+            $result = $userRepo->update($this->request->user->id, [
                 'status' => $this->request->user->status + config('user.add_status'),
             ]);
-            $requestRepo->update($this->request->id, [
+            $result = $requestRepo->update($this->request->id, [
                 'status' => config('request.late'),
             ]);
         }
+        
+        return $result;
     }
 }
