@@ -3,18 +3,30 @@
 namespace App\Http\Controllers;
 
 use App\Models\Like;
-use App\Models\Rate;
+use App\Repositories\Like\LikeRepositoryInterface;
+use App\Repositories\Rate\RateRepositoryInterface;
 use Auth;
 use Illuminate\Http\Request;
 use Session;
 
 class ReactionController extends Controller
 {
+    protected $likeRepo, $rateRepo;
+
+    public function __construct(
+        LikeRepositoryInterface $likeRepo,
+        RateRepositoryInterface $rateRepo
+    ) {
+        $this->likeRepo = $likeRepo;
+        $this->rateRepo = $rateRepo;
+    }
+
     public function react($bookId)
     {
         $user = Auth::user();
-        $likes = Like::where('user_id', $user->id)->where('book_id', $bookId)->first();
-        $countOfLikeInBook = Like::where('book_id', $bookId)->get()->count();
+        $likes = $this->likeRepo->getLikeForUser($user->id, $bookId);
+        $countOfLikeInBook = $this->likeRepo->countOfLikeInBook($user->id, $bookId);
+
         if (!$likes) {
             $item = Like::create([
                 'user_id' => $user->id,
@@ -56,16 +68,17 @@ class ReactionController extends Controller
     public function vote(Request $request)
     {
         $data = $request->all();
-        $data['user_id'] = Auth::user()->id;
-        $votes = Rate::where('user_id', $data['user_id'])->where('book_id', $data['book_id'])->first();
+        $data['user_id'] = Auth::id();
+        $votes = $this->rateRepo->getRateForUser($data['user_id'], $data['book_id']);
+
         if (!$votes) {
-            Rate::create($data);
+            $this->rateRepo->create($data);
 
             return response()->json([
                 'message' => trans('rate.voted_success'),
             ]);
         } else {
-            $votes->update($data);
+            $this->rateRepo->update($votes->id, $data);
 
             return response()->json([
                 'message' => trans('rate.voted_success'),
