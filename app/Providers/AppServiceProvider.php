@@ -7,10 +7,12 @@ use App\Models\Book;
 use App\Models\Category;
 use App\Repositories\Author\AuthorRepository;
 use App\Repositories\Author\AuthorRepositoryInterface;
+use App\Repositories\Category\CategoryRepository;
+use App\Repositories\Category\CategoryRepositoryInterface;
+use App\Repositories\Publisher\PublisherRepository;
+use App\Repositories\Publisher\PublisherRepositoryInterface;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\ServiceProvider;
-use App\Repositories\Publisher\PublisherRepositoryInterface;
-use App\Repositories\Publisher\PublisherRepository;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -25,6 +27,16 @@ class AppServiceProvider extends ServiceProvider
             PublisherRepositoryInterface::class,
             PublisherRepository::class
         );
+
+        $this->app->singleton(
+            AuthorRepositoryInterface::class,
+            AuthorRepository::class
+        );
+
+        $this->app->singleton(
+            CategoryRepositoryInterface::class,
+            CategoryRepository::class
+        );
     }
 
     /**
@@ -34,11 +46,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        $this->app->singleton(
-            AuthorRepositoryInterface::class,
-            AuthorRepository::class
-        );
-
         $votes = [
             config('rate.five'),
             config('rate.four'),
