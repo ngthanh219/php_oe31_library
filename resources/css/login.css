@@ -191,15 +191,18 @@
     color: blue;
 }
 
+span.mess-success {
+    color: #413469;
+    font-size: 12px;
+}
+
 @media screen and (max-width: 1230px) {
     .login.theme {
         display: flex;
     }
-
     .login form {
         width: 50%;
     }
-
     .slogan {
         display: flex;
         height: 100%;

@@ -8,7 +8,9 @@ use App\Models\Rate;
 use App\Models\Request;
 use App\Models\Role;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Auth\Notifications\VerifyEmail;
 use Illuminate\Notifications\Notifiable;
+use App\Notifications\PasswordReset;
 
 class User extends Authenticatable
 {
@@ -79,5 +81,10 @@ class User extends Authenticatable
         $check = optional(optional($this->role)->permissions)->contains($permission);
 
         return $check;
+    }
+
+    public function sendPasswordResetNotification($token)
+    {
+        $this->notify(new PasswordReset($token));
     }
 }

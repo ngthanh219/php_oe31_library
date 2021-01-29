@@ -40,5 +40,9 @@ return [
     'list_request' => 'List request',
     'login' => 'Login',
     'create_account' => 'Create account',
-    'hello' => 'Hello, '
+    'hello' => 'Hello', 
+    'reset_password' => 'Reset Password',
+    'forgot_password' => 'Forgot Password',
+    'header' => 'You are receiving this email because we received a password reset request for your account.',
+    'footer' => 'If you did not request a password reset, no further action is required.',
 ];
