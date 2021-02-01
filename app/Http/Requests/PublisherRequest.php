@@ -28,8 +28,9 @@ class PublisherRequest extends FormRequest
 
         return [
             'name' => [
-                'max:255|
-                required', Rule::unique('publishers')->ignore($id),
+                'max:255',
+                'required',
+                Rule::unique('publishers')->ignore($id),
             ],
             'image' => 'mimes:jpeg,jpg,png,gif|max:10000',
             'email' => 'email|nullable',
