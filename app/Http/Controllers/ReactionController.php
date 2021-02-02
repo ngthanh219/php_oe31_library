@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Like;
 use App\Repositories\Like\LikeRepositoryInterface;
 use App\Repositories\Rate\RateRepositoryInterface;
 use Auth;
@@ -26,14 +25,13 @@ class ReactionController extends Controller
         $user = Auth::user();
         $likes = $this->likeRepo->getLikeForUser($user->id, $bookId);
         $countOfLikeInBook = $this->likeRepo->countOfLikeInBook($user->id, $bookId);
-
         if (!$likes) {
-            $item = Like::create([
+            $item = $this->likeRepo->create([
                 'user_id' => $user->id,
                 'book_id' => $bookId,
                 'status' => config('like.liked'),
             ]);
-
+            
             return response()->json([
                 'count' => $countOfLikeInBook + config('like.liked'),
                 'like' => true,
@@ -50,18 +48,17 @@ class ReactionController extends Controller
                     'count' => $countOfLikeInBook,
                     'like' => false,
                 ]);
-            } else if ($likes->status == null) {
-                $likes->update([
-                    'user_id' => $user->id,
-                    'book_id' => $bookId,
-                    'status' => config('like.liked'),
-                ]);
-
-                return response()->json([
-                    'count' => $countOfLikeInBook,
-                    'like' => true,
-                ]);
             }
+            $likes->update([
+                'user_id' => $user->id,
+                'book_id' => $bookId,
+                'status' => config('like.liked'),
+            ]);
+
+            return response()->json([
+                'count' => $countOfLikeInBook,
+                'like' => true,
+            ]);
         }
     }
 
@@ -92,6 +89,7 @@ class ReactionController extends Controller
         if ($lang != 'en' && $lang != 'vi') {
             $lang = config('app.locale');
         }
+
         Session::put('language', $lang);
 
         return redirect()->back();
