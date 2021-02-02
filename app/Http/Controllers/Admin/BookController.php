@@ -19,12 +19,12 @@ class BookController extends Controller
     public function __construct(
         BookRepositoryInterface $bookRepo,
         AuthorRepositoryInterface $authorRepo,
-        PublisherRepositoryInterface $publisherRepo,
-        CategoryRepositoryInterface $categoryRepo
+        CategoryRepositoryInterface $categoryRepo,
+        PublisherRepositoryInterface $publisherRepo
     ) {
         $this->bookRepo = $bookRepo;
-        $this->categoryRepo = $categoryRepo;
         $this->authorRepo = $authorRepo;
+        $this->categoryRepo = $categoryRepo;
         $this->publisherRepo = $publisherRepo;
     }
     /**
@@ -75,7 +75,6 @@ class BookController extends Controller
 
         $data = $request->all();
         $data['in_stock'] = $data['total'];
-
         if (!isset($data['image'])) {
             $data['image'] = '';
         } else {
@@ -83,12 +82,10 @@ class BookController extends Controller
             $data['image']->move('upload/book', $image);
             $data['image'] = $image;
         }
-
         $book = $this->bookRepo->create($data);
         $this->bookRepo->attach($book, 'categories', $data['category_id']);
-        $request->session()->flash('infoMessage', trans('book.create_book_success'));
 
-        return redirect()->route('admin.books.index');
+        return redirect()->route('admin.books.index')->with('infoMessage', trans('book.create_book_success'));
     }
 
     /**
@@ -104,14 +101,13 @@ class BookController extends Controller
         }
 
         $book = $this->bookRepo->find($id);
-        $book = $this->bookRepo->load($book, ['author', 'publisher', 'categories']);
-
+    
         if ($book) {
+            $book = $this->bookRepo->load($book, ['author', 'publisher', 'categories']);
             return view('admin.book.detail', compact('book'));
         }
-        session()->flash('infoMessage', trans('book.isset_id'));
 
-        return redirect()->route('admin.books.index');
+        return redirect()->route('admin.books.index')->with('infoMessage', trans('book.isset_id'));
     }
 
     /**
@@ -161,9 +157,8 @@ class BookController extends Controller
 
         $this->bookRepo->sync($book, 'categories', $data['category_id']);
         $this->bookRepo->update($id, $data);
-        $request->session()->flash('infoMessage', trans('book.create_book_success'));
 
-        return redirect()->route('admin.books.index');
+        return redirect()->route('admin.books.index')->with('infoMessage', trans('book.create_book_success'));
     }
 
     /**
@@ -179,9 +174,8 @@ class BookController extends Controller
         }
 
         $book = $this->bookRepo->destroy($id);
-        session()->flash('infoMessage', trans('book.delete_book_success'));
 
-        return redirect()->route('admin.books.index');
+        return redirect()->route('admin.books.index')->with('infoMessage', trans('book.delete_book_success'));
     }
 
     public function search(Request $request)
@@ -218,7 +212,7 @@ class BookController extends Controller
                 trans('message.book_restore_success'));
         }
 
-        return redirect()->route('admin.publisher.index')->with('infoMessage',
+        return redirect()->route('admin.book-delete')->with('infoMessage',
             trans('message.book_restore_fail'));
     }
 
@@ -233,7 +227,7 @@ class BookController extends Controller
                 trans('message.book_hard_delete_success'));
         }
 
-        return redirect()->route('admin.publisher.index')->with('infoMessage',
+        return redirect()->route('admin.book-delete')->with('infoMessage',
             trans('message.book_hard_delete_fail'));
     }
 }
