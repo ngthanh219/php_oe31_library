@@ -19,6 +19,8 @@ use App\Repositories\Rate\RateRepository;
 use App\Repositories\Rate\RateRepositoryInterface;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\ServiceProvider;
+use App\Repositories\User\UserRepository;
+use App\Repositories\User\UserRepositoryInterface;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -31,7 +33,12 @@ class AppServiceProvider extends ServiceProvider
     {
         $this->app->singleton(
             PublisherRepositoryInterface::class,
-            PublisherRepository::class
+            PublisherRepository::class,
+        );
+
+        $this->app->singleton(
+            UserRepositoryInterface::class,
+            UserRepository::class
         );
 
         $this->app->singleton(
