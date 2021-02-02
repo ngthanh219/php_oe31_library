@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Unit\Controllers;
+namespace Tests\Unit\Controllers\Admin;
 
 use App\Http\Controllers\Admin\PublisherController;
 use App\Http\Requests\PublisherRequest;

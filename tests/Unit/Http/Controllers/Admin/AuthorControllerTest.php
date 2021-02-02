@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Unit\Http\Controllers;
+namespace Tests\Unit\Http\Controllers\Admin;
 
 use App\Http\Controllers\Admin\AuthorController;
 use App\Http\Requests\AuthorRequest;
