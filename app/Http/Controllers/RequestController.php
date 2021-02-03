@@ -15,7 +15,7 @@ use Carbon\Carbon;
 
 class RequestController extends Controller
 {
-    protected $requestRepo, $userRepo, $bookRepo, $categoryRepo, $publisherRepo;
+    protected $requestRepo, $userRepo, $authorRepo, $bookRepo, $categoryRepo, $publisherRepo;
 
     public function __construct(
         RequestRepositoryInterface $requestRepo,
@@ -77,7 +77,7 @@ class RequestController extends Controller
                 return response()->json([
                     'message' => trans('request.add_cart'),
                 ]);
-            } else {
+            } else {    
                 if (isset($cart[$id])) {
                     return response()->json([
                         'message' => trans('request.add_only_book'),
@@ -117,34 +117,34 @@ class RequestController extends Controller
         $user = $this->userRepo->getRequest();
         $idBook = [];
 
-        foreach ($user->requests as $req) {
-            array_push($idBook, $req->id);
-        }
-
         if ($user->status == config('user.block')) {
             return redirect()->route('cart')->with('mess', trans('request.over_allow'));
         }
 
+        foreach ($user->requests as $req) {
+            array_push($idBook, $req->id);
+        }
+        
         $totalBook = config('request.pending');
         $borrowedBook = $this->userRepo->checkRequest($idBook);
         $bookInCart = array_keys($cart);
         $notBorrowedBooks = array_diff($borrowedBook, $bookInCart);
         $restOfBook = array_diff($borrowedBook, $notBorrowedBooks);
-
+    
         if ($restOfBook == true) {
             return redirect()->route('cart')->with('mess', trans('request.borrowed'));
         }
-
+       
         $totalBook = $this->requestRepo->getTotalBook($user->requests);
 
         if ($totalBook == config('request.max_book')) {
             return redirect()->route('cart')->with('mess', trans('request.fail_max_book'));
         }
-
+ 
         $borrowedDate = Carbon::parse($request->borrowed_date);
         $returnDate = Carbon::parse($request->return_date);
         $totalDate = $returnDate->diffinDays($borrowedDate);
-
+        
         if ($totalDate > config('request.max_date')) {
             return redirect()->back()->withInput()->with('mess', trans('request.fail_max_date'));
         }
