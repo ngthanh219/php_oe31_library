@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\Request;
 use App\Repositories\Book\BookRepositoryInterface;
 use App\Repositories\Request\RequestRepositoryInterface;
 use Carbon\Carbon;
@@ -41,56 +40,58 @@ class RequestController extends Controller
     public function accept($id)
     {
         $request = $this->requestRepo->withFind($id, ['books']);
-
-        if ($request->status === config('request.pending') || $request->status === config('request.reject')) {
-            $result = $this->requestRepo->update($id, [
-                'status' => config('request.accept'),
-            ]);
-            if ($result) {
-                return redirect()->back()->with('infoMessage',
-                    trans('message.request_accept_success'));
-            }
-
-            return redirect()->back()->with('infoMessage',
-                trans('message.request_accept_fail'));
+        if ($request->status !== config('request.pending') && $request->status !== config('request.reject')) {
+            abort(Response::HTTP_NOT_FOUND);
         }
 
-        abort(Response::HTTP_NOT_FOUND);
+        $result = $this->requestRepo->update($id, [
+            'status' => config('request.accept'),
+        ]);
+        if ($result) {
+            return redirect()->back()->with('infoMessage',
+                trans('message.request_accept_success'));
+        }
+
+        return redirect()->back()->with('infoMessage',
+            trans('message.request_accept_fail'));
     }
 
     public function reject($id)
     {
         $request = $this->requestRepo->find($id);
-        if ($request->status === config('request.pending') || $request->status === config('request.accept')) {
-            foreach ($request->books as $book) {
-                $this->bookRepo->update($book->id, [
-                    'in_stock' => $book->in_stock + config('request.book'),
-                ]);
-            }
-            $result = $this->requestRepo->update($id, [
-                'status' => config('request.reject'),
-            ]);
-            if ($result) {
-                return redirect()->back()->with('infoMessage',
-                    trans('message.request_reject_success'));
-            }
-
-            return redirect()->back()->with('infoMessage',
-                trans('message.request_reject_fail'));
+        if ($request->status !== config('request.pending') && $request->status !== config('request.accept')) {
+            abort(Response::HTTP_NOT_FOUND);
         }
 
-        abort(Response::HTTP_NOT_FOUND);
+        foreach ($request->books as $book) {
+            $this->bookRepo->update($book->id, [
+                'in_stock' => $book->in_stock + config('request.book'),
+            ]);
+        }
+        $result = $this->requestRepo->update($id, [
+            'status' => config('request.reject'),
+        ]);
+        if ($result) {
+            return redirect()->back()->with('infoMessage',
+                trans('message.request_reject_success'));
+        }
+
+        return redirect()->back()->with('infoMessage',
+            trans('message.request_reject_fail'));
     }
 
     public function undo($id)
     {
         $request = $this->requestRepo->find($id);
-        if ($request->status === config('request.accept') || $request->status === config('request.reject') || $request->status === config('request.borrow') || $request->status === config('request.return')) {
-            if ($request->status === config('request.accept')) {
+
+        switch ($request->status) {
+            case config('request.accept'):
                 $result = $this->requestRepo->update($id, [
                     'status' => config('request.pending'),
                 ]);
-            } elseif ($request->status === config('request.reject')) {
+
+                break;
+            case config('request.reject'):
                 foreach ($request->books as $book) {
                     $this->bookRepo->update($book->id, [
                         'in_stock' => $book->in_stock - config('request.book'),
@@ -99,11 +100,15 @@ class RequestController extends Controller
                 $result = $this->requestRepo->update($id, [
                     'status' => config('request.pending'),
                 ]);
-            } elseif ($request->status === config('request.borrow')) {
+
+                break;
+            case config('request.borrow'):
                 $result = $this->requestRepo->update($id, [
                     'status' => config('request.accept'),
                 ]);
-            } elseif ($request->status === config('request.return')) {
+
+                break;
+            case config('request.return'):
                 foreach ($request->books as $book) {
                     $this->bookRepo->update($book->id, [
                         'in_stock' => $book->in_stock - config('request.book'),
@@ -112,59 +117,61 @@ class RequestController extends Controller
                 $result = $this->requestRepo->update($id, [
                     'status' => config('request.borrow'),
                 ]);
-            }
-            if ($result) {
-                return redirect()->back()->with('infoMessage',
-                    trans('message.request_undo_success'));
-            }
 
-            return redirect()->back()->with('infoMessage',
-                trans('message.request_undo_fail'));
+                break;
+            default:
+                abort(Response::HTTP_NOT_FOUND);
         }
 
-        abort(Response::HTTP_NOT_FOUND);
+        if ($result) {
+            return redirect()->back()->with('infoMessage',
+                trans('message.request_undo_success'));
+        }
+
+        return redirect()->back()->with('infoMessage',
+            trans('message.request_undo_fail'));
     }
 
     public function borrowedBook($id)
     {
-        $request = Request::findOrFail($id);
-        if ($request->status === config('request.accept')) {
-            $result = $this->requestRepo->update($id, [
-                'status' => config('request.borrow'),
-            ]);
-            if ($result) {
-                return redirect()->back()->with('infoMessage',
-                    trans('message.request_reject_success'));
-            }
-
-            return redirect()->back()->with('infoMessage',
-                trans('message.request_reject_fail'));
+        $request = $this->requestRepo->find($id);
+        if ($request->status !== config('request.accept')) {
+            abort(Response::HTTP_NOT_FOUND);
         }
 
-        abort(Response::HTTP_NOT_FOUND);
+        $result = $this->requestRepo->update($id, [
+            'status' => config('request.borrow'),
+        ]);
+        if ($result) {
+            return redirect()->back()->with('infoMessage',
+                trans('message.request_reject_success'));
+        }
+
+        return redirect()->back()->with('infoMessage',
+            trans('message.request_reject_fail'));
     }
 
     public function returnBook($id)
     {
-        $request = Request::findOrFail($id);
-        if ($request->status === config('request.borrow')) {
-            foreach ($request->books as $book) {
-                $this->bookRepo->update($book->id, [
-                    'in_stock' => $book->in_stock + config('request.book'),
-                ]);
-            }
-            $result = $this->requestRepo->update($id, [
-                'status' => config('request.return'),
-            ]);
-            if ($result) {
-                return redirect()->back()->with('infoMessage',
-                    trans('message.request_return_success'));
-            }
-
-            return redirect()->back()->with('infoMessage',
-                trans('message.request_return_fail'));
+        $request = $this->requestRepo->find($id);
+        if ($request->status !== config('request.borrow')) {
+            abort(Response::HTTP_NOT_FOUND);
         }
 
-        abort(Response::HTTP_NOT_FOUND);
+        foreach ($request->books as $book) {
+            $this->bookRepo->update($book->id, [
+                'in_stock' => $book->in_stock + config('request.book'),
+            ]);
+        }
+        $result = $this->requestRepo->update($id, [
+            'status' => config('request.return'),
+        ]);
+        if ($result) {
+            return redirect()->back()->with('infoMessage',
+                trans('message.request_return_success'));
+        }
+
+        return redirect()->back()->with('infoMessage',
+            trans('message.request_return_fail'));
     }
 }

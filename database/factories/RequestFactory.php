@@ -6,11 +6,14 @@ use App\Models\Request;
 use Faker\Generator as Faker;
 
 $factory->define(Request::class, function (Faker $faker) {
+    $borrowed_date = $faker->dateTimeBetween('-5 days', now());
+    $return_date = $faker->dateTimeBetween(now());
+
     return [
-        'note' => $faker->title,
-        'borrowed_date' => $faker->dateTime,
-        'return_date' => $faker->dateTime,
-        'user_id' => $faker->numberBetween(1, 6),
-        'status' => $faker->numberBetween(1, 6),
+        'note' => $faker->word,
+        'borrowed_date' => $borrowed_date,
+        'return_date' => $return_date,
+        'user_id' => 5,
+        'status' => 0,
     ];
 });
