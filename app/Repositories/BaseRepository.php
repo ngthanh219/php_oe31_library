@@ -22,6 +22,11 @@ abstract class BaseRepository implements RepositoryInterface
         );
     }
 
+    public function get()
+    {
+        return $this->model->orderBy('id', 'DESC')->get();
+    }
+
     public function getAll()
     {
         return $this->model->orderBy('id', 'DESC')->paginate(config('pagination.limit_page'));

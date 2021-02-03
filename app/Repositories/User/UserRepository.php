@@ -28,7 +28,7 @@ class UserRepository extends BaseRepository implements UserRepositoryInterface
     {
         return User::where('name', 'LIKE', '%' . $key . '%')->orderBy('id', 'DESC')->get();
     }
-    
+
     public function getRequest()
     {
         $status = [

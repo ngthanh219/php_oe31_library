@@ -21,6 +21,10 @@ use App\Repositories\Request\RequestRepository;
 use App\Repositories\Request\RequestRepositoryInterface;
 use App\Repositories\User\UserRepository;
 use App\Repositories\User\UserRepositoryInterface;
+use App\Repositories\Role\RoleRepository;
+use App\Repositories\Role\RoleRepositoryInterface;
+use App\Repositories\Permission\PermissionRepository;
+use App\Repositories\Permission\PermissionRepositoryInterface;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\ServiceProvider;
 
@@ -74,8 +78,13 @@ class AppServiceProvider extends ServiceProvider
         );
 
         $this->app->singleton(
-            UserRepositoryInterface::class,
-            UserRepository::class
+            RoleRepositoryInterface::class,
+            RoleRepository::class
+        );
+
+        $this->app->singleton(
+            PermissionRepositoryInterface::class,
+            PermissionRepository::class
         );
     }
 

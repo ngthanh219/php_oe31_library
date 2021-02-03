@@ -6,13 +6,19 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\RoleRequest;
 use App\Models\Permission;
 use App\Models\Role;
+use App\Repositories\Role\RoleRepositoryInterface;
+use App\Repositories\Permission\PermissionRepositoryInterface;
 use Illuminate\Http\Request;
 
 class RoleController extends Controller
 {
-    public function __construct()
+    protected $roleRepo, $perRepo;
+
+    public function __construct(RoleRepositoryInterface $roleRepo, PermissionRepositoryInterface $perRepo)
     {
         $this->middleware('superAdmin');
+        $this->roleRepo = $roleRepo;
+        $this->perRepo = $perRepo;
     }
 
     /**
@@ -22,7 +28,7 @@ class RoleController extends Controller
      */
     public function index()
     {
-        $roles = Role::orderBy('id', 'DESC')->get();
+        $roles = $this->roleRepo->getAll();
 
         return view('admin.role.index', compact('roles'));
     }
@@ -34,7 +40,7 @@ class RoleController extends Controller
      */
     public function create()
     {
-        $permissions = Permission::orderBy('id', 'DESC')->get();
+        $permissions = $this->perRepo->get();
 
         return view('admin.role.create', compact('permissions'));
     }
@@ -47,14 +53,12 @@ class RoleController extends Controller
      */
     public function store(RoleRequest $request)
     {
-        $role = new Role;
-        $result = $role->create([
+        $result = $this->roleRepo->create([
             'name' => $request->name,
         ]);
+
         if ($request->permissions) {
-            foreach ($request->permissions as $permission) {
-                $result->permissions()->attach($permission);
-            }
+            $this->roleRepo->attach($result, 'permissions', $request->permissions);
         }
 
         return redirect()->route('admin.roles.index')->with('infoMessage', trans('role.create_role_success'));
@@ -68,8 +72,9 @@ class RoleController extends Controller
      */
     public function show($id)
     {
-        $permissions = Permission::all();
-        $role = Role::findOrFail($id)->load('permissions');
+        $permissions = $this->perRepo->get();
+        $role = $this->roleRepo->find($id);
+        $role = $this->roleRepo->load($role, 'permissions');
 
         return view('admin.role.show', compact('role', 'permissions'));
     }
@@ -82,8 +87,9 @@ class RoleController extends Controller
      */
     public function edit($id)
     {
-        $permissions = Permission::all();
-        $role = Role::findOrFail($id)->load('permissions');
+        $permissions = $this->perRepo->get();
+        $role = $this->roleRepo->find($id);
+        $role = $this->roleRepo->load($role, 'permissions');
 
         return view('admin.role.edit', compact('role', 'permissions'));
     }
@@ -97,8 +103,8 @@ class RoleController extends Controller
      */
     public function update(RoleRequest $request, $id)
     {
-        $role = Role::findOrFail($id);
-        $role->permissions()->sync($request->permission);
+        $role = $this->roleRepo->find($id);
+        $this->roleRepo->sync($role, 'permissions', $request->permission);
 
         return redirect()->back();
     }
@@ -111,11 +117,13 @@ class RoleController extends Controller
      */
     public function destroy($id)
     {
-        $role = Role::findOrFail($id);
+        $role = $this->roleRepo->find($id);
+
         if ($role->permissions) {
-            $role->permissions()->sync([]);
+            $this->roleRepo->sync($role, 'permissions');
         }
-        $result = $role->delete();
+        $result = $this->roleRepo->destroy($id);
+
         if ($result) {
             return redirect()->route('admin.roles.index')->with('infoMessage',
                 trans('message.role_delete_success'));
