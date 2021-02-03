@@ -28,10 +28,12 @@ class AuthorControllerTest extends TestCase
 
     public function tearDown(): void
     {
-        parent::tearDown();
-        
         m::close();
+
+        unset($this->authorRepo);
         unset($this->authorControllerTest);
+        
+        parent::tearDown();
     }
 
     public function test_index_method()
