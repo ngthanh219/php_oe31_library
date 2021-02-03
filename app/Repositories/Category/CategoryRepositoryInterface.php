@@ -12,7 +12,6 @@ interface CategoryRepositoryInterface extends RepositoryInterface
      * @return void
      */
     public function getParentOrderBy();
-    
     /**
      * Lấy ra toàn bộ category parent mà không kèm theo OrderBy
      *

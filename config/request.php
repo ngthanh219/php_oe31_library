@@ -12,4 +12,5 @@ return [
     'total' => 0,
     'max_book' => 5,
     'max_date' => 30,
+    'notification' => 3,
 ];

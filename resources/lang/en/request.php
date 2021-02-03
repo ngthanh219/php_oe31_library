@@ -48,4 +48,8 @@ return [
     'borrowed' => 'You have borrowed some books already',
     'fail_max_book' => 'You have borrowed more than 5 books',
     'fail_max_date' => 'You can only borrow for about 30 days',
+    'days_remaining' => 'Days remaining',
+    'you_have' => 'You have',
+    'mess' => 'to return the book to return the book and then forget to return the book on time',
+    'thanks' => 'Thanks',
 ];
