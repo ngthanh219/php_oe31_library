@@ -14,15 +14,15 @@ class ProcessMailNotifyUser implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    protected $user, $request;
+    protected $email, $request;
     /**
      * Create a new job instance.
      *
      * @return void
      */
-    public function __construct($user, $request)
+    public function __construct($email, $request)
     {
-        $this->user = $user;
+        $this->email = $email;
         $this->request = $request;
     }
 
@@ -33,7 +33,7 @@ class ProcessMailNotifyUser implements ShouldQueue
      */
     public function handle()
     {
-        Mail::to($this->user)
+        Mail::to($this->email)
             ->send(new UserNotification($this->request->user, $this->request));
     }
 }

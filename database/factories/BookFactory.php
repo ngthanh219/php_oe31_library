@@ -4,17 +4,16 @@
 
 use App\Models\Book;
 use Faker\Generator as Faker;
-use Illuminate\Support\Str;
 
 $factory->define(Book::class, function (Faker $faker) {
     return [
-        'image' => $faker->imageUrl('cats') ,
-        'name' => $faker->name,
-        'author_id' => Str::random(10),
-        'publisher_id' => Str::random(10),
-        'in_stock' =>  Str::random(10),
-        'total' =>  Str::random(10),
-        'status' =>  Str::random(10),
-        'description' =>  $faker->word,
+        'image' => $faker->imageUrl('cats'),
+        'name' => $faker->title,
+        'author_id' => $faker->numberBetween(1, 10),
+        'publisher_id' => $faker->numberBetween(1, 10),
+        'in_stock' => $faker->numberBetween(20, 50),
+        'total' => $faker->numberBetween(20, 50),
+        'status' => $faker->numberBetween(1, 2),
+        'description' => $faker->word,
     ];
 });
