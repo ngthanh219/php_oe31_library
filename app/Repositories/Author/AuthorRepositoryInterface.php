@@ -2,7 +2,9 @@
 
 namespace App\Repositories\Author;
 
-interface AuthorRepositoryInterface
+use App\Repositories\RepositoryInterface;
+
+interface AuthorRepositoryInterface extends RepositoryInterface
 {
     public function getRelatedBook($id);
 }

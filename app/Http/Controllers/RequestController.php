@@ -3,44 +3,61 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\OrderRequest;
-use App\Models\Author;
-use App\Models\Book;
-use App\Models\Category;
 use App\Models\Request;
-use App\Models\User;
+use App\Repositories\Author\AuthorRepositoryInterface;
+use App\Repositories\Book\BookRepositoryInterface;
+use App\Repositories\Category\CategoryRepositoryInterface;
+use App\Repositories\Publisher\PublisherRepositoryInterface;
+use App\Repositories\Request\RequestRepositoryInterface;
+use App\Repositories\User\UserRepositoryInterface;
 use Auth;
 use Carbon\Carbon;
-use DB;
 
 class RequestController extends Controller
 {
+    protected $requestRepo, $userRepo, $bookRepo, $categoryRepo, $publisherRepo;
+
+    public function __construct(
+        RequestRepositoryInterface $requestRepo,
+        BookRepositoryInterface $bookRepo,
+        CategoryRepositoryInterface $categoryRepo,
+        PublisherRepositoryInterface $publisherRepo,
+        AuthorRepositoryInterface $authorRepo,
+        UserRepositoryInterface $userRepo
+    ) {
+        $this->requestRepo = $requestRepo;
+        $this->bookRepo = $bookRepo;
+        $this->categoryRepo = $categoryRepo;
+        $this->publisherRepo = $publisherRepo;
+        $this->authorRepo = $authorRepo;
+        $this->userRepo = $userRepo;
+    }
     public function index()
     {
-        $requests = Auth::user()->requests()->paginate(config('pagination.list_request'));
+        $requests = $this->requestRepo->getUserRequest();
 
         return view('client.list_request', compact('requests'));
     }
 
     public function show($id)
-    {   
-        $request = Request::findOrFail($id)->load('user');
-        
+    {
+        $request = $this->requestRepo->withFind($id, ['user']);
+
         return view('client.detail_request', compact('request'));
     }
 
     public function cart()
     {
-        $categories = Category::with('children')->where('parent_id', config('category.parent_id'))->get();
-        $authors = Author::get()->take(config('pagination.limit_author'));
         $cart = session()->get('cart');
 
-        return view('client.cart', compact('categories', 'authors', 'cart'));
+        return view('client.cart', compact('cart'));
     }
 
     public function addToCart($id)
     {
         $cart = session()->get('cart');
-        $book = Book::findOrFail($id);
+        $book = $this->bookRepo->find($id);
+
         if ($book->in_stock == config('book.visible')) {
             return response()->json([
                 'message' => trans('request.out_of_stock'),
@@ -97,31 +114,19 @@ class RequestController extends Controller
     public function request(OrderRequest $request)
     {
         $cart = session()->get('cart');
-        $status = [
-            config('request.return'),
-            config('request.reject'),
-            config('request.forget')
-        ];
-        $user = Auth::user()->load([
-            'requests.books',
-            'requests' => function ($query) use ($status) {
-                $query->whereNotIn('status', $status)->withCount('books');
-            },
-        ]);
+        $user = $this->userRepo->getRequest();
         $idBook = [];
-        foreach($user->requests as $req) {
+
+        foreach ($user->requests as $req) {
             array_push($idBook, $req->id);
         }
-    
+
         if ($user->status == config('user.block')) {
             return redirect()->route('cart')->with('mess', trans('request.over_allow'));
         }
 
         $totalBook = config('request.pending');
-        $borrowedBook = DB::table('book_request')
-            ->whereIn('request_id', $idBook)
-            ->pluck('book_id')
-            ->toArray();
+        $borrowedBook = $this->userRepo->checkRequest($idBook);
         $bookInCart = array_keys($cart);
         $notBorrowedBooks = array_diff($borrowedBook, $bookInCart);
         $restOfBook = array_diff($borrowedBook, $notBorrowedBooks);
@@ -130,7 +135,7 @@ class RequestController extends Controller
             return redirect()->route('cart')->with('mess', trans('request.borrowed'));
         }
 
-        $totalBook = $user->requests->sum('books_count');
+        $totalBook = $this->requestRepo->getTotalBook($user->requests);
 
         if ($totalBook == config('request.max_book')) {
             return redirect()->route('cart')->with('mess', trans('request.fail_max_book'));
@@ -144,20 +149,21 @@ class RequestController extends Controller
             return redirect()->back()->withInput()->with('mess', trans('request.fail_max_date'));
         }
 
-        $req = new Request;
-        $order = $req->create([
+        $order = $this->requestRepo->create([
             'user_id' => Auth::id(),
             'status' => config('request.pending'),
             'borrowed_date' => $request->borrowed_date,
             'return_date' => $request->return_date,
         ]);
+
         foreach ($cart as $item) {
-            $book = Book::findOrFail($item['id']);
-            $book->update([
+            $book = $this->bookRepo->find($item['id']);
+            $this->bookRepo->update($item['id'], [
                 'in_stock' => $book->in_stock - config('request.book'),
             ]);
-            $order->books()->attach($book);
+            $this->requestRepo->attach($order, 'books', $book);
         }
+
         session()->forget('cart');
         session()->save();
 
