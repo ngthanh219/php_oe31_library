@@ -28,8 +28,9 @@ class AuthorRequest extends FormRequest
 
         return [
             'name' => [
-                'max:255|
-                required', Rule::unique('authors')->ignore($id),
+                'max:255',
+                'required',
+                Rule::unique('authors')->ignore($id),
             ],
             'description' => 'max:255',
             'date_of_born' => 'date|nullable|before:tomorrow',

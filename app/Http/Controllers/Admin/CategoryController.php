@@ -47,7 +47,7 @@ class CategoryController extends Controller
             abort(Response::HTTP_FORBIDDEN);
         }
 
-        $categoryParents = $this->categoryRepo->getParentOrderByAll();
+        $categoryParents = $this->categoryRepo->getParentOrderBy();
 
         return view('admin.category.create', compact('categoryParents'));
     }
@@ -111,13 +111,14 @@ class CategoryController extends Controller
             abort(Response::HTTP_FORBIDDEN);
         }
 
-        $category = $this->categoryRepo->find($id);
+        $category = $this->categoryRepo->withFind($id, ['children']);
 
-        if ($category->parent_id === config('category.parent_id')) {
-            $category->load('children');
-
-            return view('admin.category.show', compact('category'));
+        if (!$category) {
+            return redirect()->route('admin.categories.index')->with('infoMessage',
+                trans('message.category_not_valid'));
         }
+
+        return view('admin.category.show', compact('category'));
     }
 
     /**
@@ -161,7 +162,7 @@ class CategoryController extends Controller
 
         if ($result) {
             if (isset($parent->parent)) {
-                return redirect()->route('admin.categories.show', $parent['parent']->id)->with('infoMessage',
+                return redirect()->route('admin.categories.show', $parent->parent['id'])->with('infoMessage',
                     trans('message.category_update_success'));
             }
 
@@ -181,7 +182,7 @@ class CategoryController extends Controller
      */
     public function destroy($id)
     {
-        if (Auth::user()->can('category.destroy')) {
+        if (!Auth::user()->can('category.destroy')) {
             abort(Response::HTTP_FORBIDDEN);
         }
 

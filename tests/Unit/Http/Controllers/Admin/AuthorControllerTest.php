@@ -32,7 +32,7 @@ class AuthorControllerTest extends TestCase
 
         unset($this->authorRepo);
         unset($this->authorControllerTest);
-        
+
         parent::tearDown();
     }
 
@@ -84,7 +84,7 @@ class AuthorControllerTest extends TestCase
         ]);
         $request = new AuthorRequest($data);
         $request->files = $bag;
-        
+
         $this->authorRepo
             ->shouldReceive('create')
             ->withAnyArgs($request)

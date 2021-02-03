@@ -28,8 +28,9 @@ class BookRequest extends FormRequest
 
         return [
             'name' => [
-                'min:5|
-                required', Rule::unique('authors')->ignore($id),
+                'min:5',
+                'required',
+                Rule::unique('authors')->ignore($id),
             ],
             'image' => 'image',
             'description' => 'max: 1000',
