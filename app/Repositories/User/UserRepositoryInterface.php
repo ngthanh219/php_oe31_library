@@ -36,6 +36,7 @@ interface UserRepositoryInterface extends RepositoryInterface
      */
     public function getRequest();
 
+    
     /**
      * Lấy ra id của các quyển sách đã mượn
      *

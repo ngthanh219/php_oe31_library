@@ -13,20 +13,20 @@ use App\Repositories\Category\CategoryRepository;
 use App\Repositories\Category\CategoryRepositoryInterface;
 use App\Repositories\Like\LikeRepository;
 use App\Repositories\Like\LikeRepositoryInterface;
+use App\Repositories\Permission\PermissionRepository;
+use App\Repositories\Permission\PermissionRepositoryInterface;
 use App\Repositories\Publisher\PublisherRepository;
 use App\Repositories\Publisher\PublisherRepositoryInterface;
 use App\Repositories\Rate\RateRepository;
 use App\Repositories\Rate\RateRepositoryInterface;
 use App\Repositories\Request\RequestRepository;
 use App\Repositories\Request\RequestRepositoryInterface;
-use App\Repositories\User\UserRepository;
-use App\Repositories\User\UserRepositoryInterface;
 use App\Repositories\Role\RoleRepository;
 use App\Repositories\Role\RoleRepositoryInterface;
-use App\Repositories\Permission\PermissionRepository;
-use App\Repositories\Permission\PermissionRepositoryInterface;
 use App\Repositories\Comment\CommentRepository;
 use App\Repositories\Comment\CommentRepositoryInterface;
+use App\Repositories\User\UserRepository;
+use App\Repositories\User\UserRepositoryInterface;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\ServiceProvider;
 
@@ -92,6 +92,11 @@ class AppServiceProvider extends ServiceProvider
         $this->app->singleton(
             CommentRepositoryInterface::class,
             CommentRepository::class
+        );
+
+        $this->app->singleton(
+            UserRepositoryInterface::class,
+            UserRepository::class
         );
     }
 
