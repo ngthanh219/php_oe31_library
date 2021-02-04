@@ -50,6 +50,21 @@ class AppServiceProvider extends ServiceProvider
         );
 
         $this->app->singleton(
+            RoleRepositoryInterface::class,
+            RoleRepository::class
+        );
+
+        $this->app->singleton(
+            PermissionRepositoryInterface::class,
+            PermissionRepository::class
+        );
+
+        $this->app->singleton(
+            CommentRepositoryInterface::class,
+            CommentRepository::class
+        );
+
+        $this->app->singleton(
             AuthorRepositoryInterface::class,
             AuthorRepository::class
         );
@@ -77,26 +92,6 @@ class AppServiceProvider extends ServiceProvider
         $this->app->singleton(
             RequestRepositoryInterface::class,
             RequestRepository::class
-        );
-
-        $this->app->singleton(
-            RoleRepositoryInterface::class,
-            RoleRepository::class
-        );
-
-        $this->app->singleton(
-            PermissionRepositoryInterface::class,
-            PermissionRepository::class
-        );
-
-        $this->app->singleton(
-            CommentRepositoryInterface::class,
-            CommentRepository::class
-        );
-
-        $this->app->singleton(
-            UserRepositoryInterface::class,
-            UserRepository::class
         );
     }
 
