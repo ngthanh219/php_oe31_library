@@ -27,6 +27,8 @@ use App\Repositories\Comment\CommentRepository;
 use App\Repositories\Comment\CommentRepositoryInterface;
 use App\Repositories\User\UserRepository;
 use App\Repositories\User\UserRepositoryInterface;
+use App\Repositories\Notification\NotificationRepository;
+use App\Repositories\Notification\NotificationRepositoryInterface;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\ServiceProvider;
 
@@ -92,6 +94,11 @@ class AppServiceProvider extends ServiceProvider
         $this->app->singleton(
             RequestRepositoryInterface::class,
             RequestRepository::class
+        );
+
+        $this->app->singleton(
+            NotificationRepositoryInterface::class,
+            NotificationRepository::class
         );
     }
 

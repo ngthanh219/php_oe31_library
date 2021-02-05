@@ -8,6 +8,7 @@
     "/js/editor.js": "/js/editor.js",
     "/js/like_book.js": "/js/like_book.js",
     "/js/notification.js": "/js/notification.js",
+    "/js/realtime.js": "/js/realtime.js",
     "/js/remove_cart.js": "/js/remove_cart.js",
     "/js/search.js": "/js/search.js",
     "/js/select2.js": "/js/select2.js",

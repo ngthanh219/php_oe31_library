@@ -13,12 +13,14 @@ use App\Repositories\Category\CategoryRepositoryInterface;
 use App\Repositories\Publisher\PublisherRepositoryInterface;
 use App\Repositories\Request\RequestRepositoryInterface;
 use App\Repositories\User\UserRepositoryInterface;
+use App\Repositories\Role\RoleRepositoryInterface;
 use Mockery as m;
 use Tests\TestCase;
+use Illuminate\Support\Collection;
 
 class RequestControllerTest extends TestCase
 {
-    protected $requestRepo, $userRepo, $bookRepo, $categoryRepo, $publisherRepo, $authorRepo;
+    protected $requestRepo, $userRepo, $bookRepo, $categoryRepo, $publisherRepo, $authorRepo, $roleRepo;
     protected $requestController;
     protected $request, $user;
     protected $id;
@@ -36,9 +38,11 @@ class RequestControllerTest extends TestCase
         $this->authorRepo = m::mock(AuthorRepositoryInterface::class)->makePartial();
         $this->userRepo = m::mock(UserRepositoryInterface::class)->makePartial();
         $this->publisherRepo = m::mock(PublisherRepositoryInterface::class)->makePartial();
-        $this->requestController = new RequestController($this->requestRepo, $this->bookRepo, $this->categoryRepo, $this->publisherRepo, $this->authorRepo, $this->userRepo);
+        $this->roleRepo = m::mock(RoleRepositoryInterface::class)->makePartial();
+        $this->requestController = new RequestController($this->requestRepo, $this->bookRepo, $this->categoryRepo, $this->publisherRepo, $this->authorRepo, $this->userRepo, $this->roleRepo);
         $this->request = factory(Request::class)->make();
         $this->user = factory(User::class)->make();
+        $this->user2 = factory(User::class)->make();
         $this->book = factory(Book::class)->make();
         $this->request->id = 1;
         $this->user->setRelation('requests', [$this->request]);
@@ -68,6 +72,7 @@ class RequestControllerTest extends TestCase
         unset($this->authorRepo);
         unset($this->publisherRepo);
         unset($this->userRepo);
+        unset($this->roleRepo);
         unset($this->request);
         unset($this->id);
         unset($this->relationUser);
@@ -77,6 +82,7 @@ class RequestControllerTest extends TestCase
         unset($this->messUnsetCart);
         unset($this->cart);
         unset($this->user);
+        unset($this->role);
 
         parent::tearDown();
     }
@@ -234,42 +240,5 @@ class RequestControllerTest extends TestCase
             ->andReturn($totalBookSuccess);
         $view = $this->requestController->request($request);
         $this->assertEquals('http://127.0.0.1:8000', $view->getTarGetUrl());
-    }
-
-    public function test_request_create_order()
-    {
-        $this->withSession(['cart' => [$this->id => ['id' => 1]]]);
-        $order = [
-            "borrowed_date" => "2021-02-13",
-            "return_date" => "2021-2-26",
-        ];
-        $idBook = ['2'];
-        $totalBookSuccess = 4;
-        $this->book->in_stock = 10;
-        $request = new OrderRequest($order);
-        $this->userRepo->shouldReceive('checkRequest')
-            ->once()
-            ->andReturn($idBook);
-        $this->userRepo->shouldReceive('getRequest')
-            ->once()
-            ->andReturn($this->user);
-        $this->requestRepo->shouldReceive('getTotalBook')
-            ->with($this->user->requests)
-            ->once()
-            ->andReturn($totalBookSuccess);
-        $this->requestRepo->shouldReceive('create')
-            ->once()
-            ->andReturn(true);
-        $this->bookRepo->shouldReceive('update')
-            ->once()
-            ->andReturn(true);
-        $this->bookRepo->shouldReceive('find')
-            ->once()
-            ->andReturn($this->book);
-        $this->requestRepo->shouldReceive('attach')
-            ->once()
-            ->andReturn(true);
-        $view = $this->requestController->request($request);
-        $this->assertEquals(route('cart'), $view->getTarGetUrl());
     }
 }

@@ -20,14 +20,13 @@ Auth::routes();
 Route::group(['middleware' => 'language'], function () {
     Route::group(['middleware' => 'auth'], function () {
         Route::group(['middleware' => 'admin'], function () {
-
             Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'as' => 'admin.'], function () {
                 Route::get('dashboard', 'HomeController@index')->name('dashboard');
                 Route::get('publishers/export', 'PublisherController@export')->name('publishers.export');
                 Route::resources([
                     'roles' => 'RoleController',
                     'publishers' => 'PublisherController',
-                    'users' => 'UserController',
+                    'users' => 'UserController' ,
                     'authors' => 'AuthorController',
                     'categories' => 'CategoryController',
                     'books' => 'BookController',
@@ -46,6 +45,9 @@ Route::group(['middleware' => 'language'], function () {
                 Route::get('book-delete', 'BookController@listDeleteBook')->name('book-delete');
                 Route::delete('hard-delete/{book}', 'BookController@hardDelete')->name('hard-delete');
                 Route::get('book-restore/{book}', 'BookController@restoreBook')->name('book-restore');
+                Route::get('notification', 'NotificationController@index')->name('notification');
+                Route::get('detail-notification/{notification}', 'NotificationController@detailNotification')->name('detail-notification');
+                Route::get('notification-for-admin', 'NotificationController@apiGetUser')->name('notification-for-user');
             });
         });
         Route::resource('comments', 'CommentController');

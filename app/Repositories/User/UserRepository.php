@@ -52,4 +52,9 @@ class UserRepository extends BaseRepository implements UserRepositoryInterface
             ->pluck('book_id')
             ->toArray();
     }
+
+    public function getUserHaveRoleAdmins($roles)
+    {
+        return $this->model->whereIn('role_id', $roles)->get();
+    }
 }

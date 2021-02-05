@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\NotificationEvent;
 use App\Http\Requests\OrderRequest;
 use App\Models\Request;
 use App\Repositories\Author\AuthorRepositoryInterface;
@@ -10,12 +11,20 @@ use App\Repositories\Category\CategoryRepositoryInterface;
 use App\Repositories\Publisher\PublisherRepositoryInterface;
 use App\Repositories\Request\RequestRepositoryInterface;
 use App\Repositories\User\UserRepositoryInterface;
+use App\Repositories\Role\RoleRepositoryInterface;
 use Auth;
 use Carbon\Carbon;
+use App\Models\User;
+use App\Notifications\Admin\RequestNotification;
+use DB;
+use Illuminate\Support\Facades\Notification;
+use Pusher\Pusher;
+use Illuminate\Notifications\Channels\DatabaseChannel;
+
 
 class RequestController extends Controller
 {
-    protected $requestRepo, $userRepo, $authorRepo, $bookRepo, $categoryRepo, $publisherRepo;
+    protected $requestRepo, $userRepo, $authorRepo, $bookRepo, $categoryRepo, $publisherRepo, $roleRepo;
 
     public function __construct(
         RequestRepositoryInterface $requestRepo,
@@ -23,7 +32,8 @@ class RequestController extends Controller
         CategoryRepositoryInterface $categoryRepo,
         PublisherRepositoryInterface $publisherRepo,
         AuthorRepositoryInterface $authorRepo,
-        UserRepositoryInterface $userRepo
+        UserRepositoryInterface $userRepo,
+        RoleRepositoryInterface $roleRepo
     ) {
         $this->requestRepo = $requestRepo;
         $this->bookRepo = $bookRepo;
@@ -31,7 +41,9 @@ class RequestController extends Controller
         $this->publisherRepo = $publisherRepo;
         $this->authorRepo = $authorRepo;
         $this->userRepo = $userRepo;
+        $this->roleRepo = $roleRepo;
     }
+
     public function index()
     {
         $requests = $this->requestRepo->getUserRequest();
@@ -77,7 +89,7 @@ class RequestController extends Controller
                 return response()->json([
                     'message' => trans('request.add_cart'),
                 ]);
-            } else {    
+            } else {
                 if (isset($cart[$id])) {
                     return response()->json([
                         'message' => trans('request.add_only_book'),
@@ -124,27 +136,27 @@ class RequestController extends Controller
         foreach ($user->requests as $req) {
             array_push($idBook, $req->id);
         }
-        
+
         $totalBook = config('request.pending');
         $borrowedBook = $this->userRepo->checkRequest($idBook);
         $bookInCart = array_keys($cart);
         $notBorrowedBooks = array_diff($borrowedBook, $bookInCart);
         $restOfBook = array_diff($borrowedBook, $notBorrowedBooks);
-    
+
         if ($restOfBook == true) {
             return redirect()->route('cart')->with('mess', trans('request.borrowed'));
         }
-       
+
         $totalBook = $this->requestRepo->getTotalBook($user->requests);
 
         if ($totalBook == config('request.max_book')) {
             return redirect()->route('cart')->with('mess', trans('request.fail_max_book'));
         }
- 
+
         $borrowedDate = Carbon::parse($request->borrowed_date);
         $returnDate = Carbon::parse($request->return_date);
         $totalDate = $returnDate->diffinDays($borrowedDate);
-        
+
         if ($totalDate > config('request.max_date')) {
             return redirect()->back()->withInput()->with('mess', trans('request.fail_max_date'));
         }
@@ -155,6 +167,22 @@ class RequestController extends Controller
             'borrowed_date' => $request->borrowed_date,
             'return_date' => $request->return_date,
         ]);
+
+        $roles = $this->roleRepo->getRoleAdmins();
+        $roleList = $roles->pluck('id');
+
+        $users = $this->userRepo->getUserHaveRoleAdmins($roleList);
+        $userId = $users->pluck('id');
+
+        $noti = [
+            'request_id' => $order->id,
+            'nameUser' => Auth::user()->name,
+            'content' => trans('request.info_request'),
+            'users' => $userId,
+        ];
+
+        Notification::send($users, new RequestNotification($noti));
+        event(new NotificationEvent($noti));
 
         foreach ($cart as $item) {
             $book = $this->bookRepo->find($item['id']);

@@ -3,3 +3,9 @@ $(document).ready(function() {
         $('.user-menu').addClass('open');
     });
 });
+
+$(document).ready(function() {
+    $(".notifications-menu").click(function(e) {
+        $('.notifications-menu').addClass('open');
+    });
+});
