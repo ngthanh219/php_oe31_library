@@ -29,4 +29,5 @@ mix.js('resources/js/app.js', 'public/js')
     .js('resources/js/reaction/comment_book.js', 'public/js')
     .js('resources/js/reaction/vote_book.js', 'public/js')
     .js('resources/js/search.js', 'public/js')
-    .js('resources/js/realtime.js', 'public/js');
+    .js('resources/js/realtime.js', 'public/js')
+    .js('resources/js/chart.js', 'public/js');

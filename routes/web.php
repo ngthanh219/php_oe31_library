@@ -48,6 +48,7 @@ Route::group(['middleware' => 'language'], function () {
                 Route::get('notification', 'NotificationController@index')->name('notification');
                 Route::get('detail-notification/{notification}', 'NotificationController@detailNotification')->name('detail-notification');
                 Route::get('notification-for-admin', 'NotificationController@apiGetUser')->name('notification-for-user');
+                Route::get('chart', 'HomeController@getDataChart')->name('chart');
             });
         });
         Route::resource('comments', 'CommentController');
@@ -56,6 +57,7 @@ Route::group(['middleware' => 'language'], function () {
         Route::get('request-detail/{request}', 'RequestController@show')->name('request-detail');
         Route::get('vote', 'ReactionController@vote')->name('vote');
         Route::post('request', 'RequestController@request')->name('request');
+        Route::get('notification', 'Admin\NotificationController@index')->name('notification');
     });
 
     Route::get('/', 'BookController@index')->name('home');

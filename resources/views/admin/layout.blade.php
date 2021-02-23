@@ -116,6 +116,12 @@
                     </div>
                 </div>
                 <ul class="sidebar-menu" data-widget="tree">
+                    <li>
+                        <a href="{{ route('admin.dashboard') }}">
+                            <i class="fa fa-dashboard"></i>
+                            <span>{{ trans('dashboard.dashboard') }}</span>
+                        </a>
+                    </li>
                     @can('admin-role')
                         <li>
                             <a href="{{ route('admin.roles.index') }}">

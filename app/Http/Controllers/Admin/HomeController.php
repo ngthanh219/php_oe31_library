@@ -3,19 +3,22 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
+use App\Repositories\Request\RequestRepositoryInterface;
 
 class HomeController extends Controller
 {
+    protected $requestRepo;
+
     /**
      * Create a new controller instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(RequestRepositoryInterface $requestRepo)
     {
         $this->middleware('auth');
         $this->middleware('admin');
+        $this->requestRepo = $requestRepo;
     }
 
     /**
@@ -25,6 +28,29 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('admin.layout');
+        return view('admin.home');
+    }
+
+    public function getDataChart()
+    {
+        $requests = $this->requestRepo->chart();
+
+        $data = [];
+        $list = [];
+        foreach ($requests as $request) {
+            array_push($data, $request);
+        }
+
+        foreach ($data as $item) {
+            $val = [
+                'month' => $item->month,
+                'book' => $item->book,
+            ];
+            array_push($list, $val);
+        }
+
+        return response()->json([
+            'list' => $list,
+        ]);
     }
 }
