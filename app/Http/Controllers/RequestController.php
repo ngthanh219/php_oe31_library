@@ -19,8 +19,6 @@ use App\Notifications\Admin\RequestNotification;
 use DB;
 use Illuminate\Support\Facades\Notification;
 use Pusher\Pusher;
-use Illuminate\Notifications\Channels\DatabaseChannel;
-
 
 class RequestController extends Controller
 {
